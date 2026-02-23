@@ -1,0 +1,1419 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body::-webkit-scrollbar { 
+  display: none; 
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+  color: #333;
+  overflow-x: hidden;
+}
+
+/* Logo and Brand Spacing */
+.logo-container {
+  display: flex;
+  align-items: center; /* Centers logo and text vertically */
+  gap: 15px;           /* Adjust this value for more/less space after the logo */
+  margin-left: 40px;
+}
+
+.nav-logo {
+  height: 50px;        /* Adjust size as needed */
+  width: auto;
+}
+
+.home-page .brand-name {
+  margin: 0;           /* Removes default h1 margins */
+  font-size: 32px;
+  color: white;     /* Distinct size for the brand */
+}
+
+.brand-name {
+  margin: 0;           /* Removes default h1 margins */
+  font-size: 32px;
+  color: black ;
+  font-weight: bold;
+}
+
+/* Default navbar for non‑Home pages */
+/* --- THE BASE NAVBAR --- */
+.navbar {
+    position: fixed !important;
+    top: 0 !important; /* Forces it to stay pinned to the very top */
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 9999 !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    transition: all 0.4s ease-in-out !important; /* Smooth transition */
+    
+    /* Default: This is the style for Library, About, etc. */
+    background: #ffffff !important;
+    padding: 40px 40px !important; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    font-size: 24px;
+}
+
+/* --- THE TRANSPARENT STATE (Home Page Only) --- */
+/* This only triggers if the body has .home-page AND the navbar does NOT have .scrolled */
+.home-page .navbar:not(.scrolled) {
+    background: rgba(0,0,0,0.19) !important;
+    padding: 40px; /* Larger padding at the top */
+    box-shadow: none;
+}
+
+/* --- THE SCROLLED STATE (Home Page Only) --- */
+/* When you scroll 50px on Home, the JS adds .scrolled. 
+   This forces it to match the Library navbar style. */
+.navbar.scrolled {
+    background: #ffffff !important;
+    padding: 20px 40px !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+}
+
+/* --- TEXT COLORS --- */
+/* Default links (Dark) */
+.navbar a {
+    color: rgba(33, 36, 35, 0.85);
+    text-decoration: none;
+    margin: 0 0.4rem;
+}
+
+.navbarb {
+  background-color: #009688;
+  padding: 1rem 1rem;
+  border-radius: 30px;
+  color: white !important;
+  text-decoration: none;
+  margin-left: auto;
+  margin-right: 4rem !important;
+}
+
+/* --- 2. THE HOME PAGE SPECIAL CASE (Transparent + White Fonts) --- */
+/* Only applies if body has .home-page AND navbar is NOT scrolled */
+.home-page .navbar:not(.scrolled) {
+    background: rgba(0,0,0,0.19) !important;
+    padding: 40px 40px !important;
+    box-shadow: none;
+}
+
+.home-page .navbar:not(.scrolled) a,
+.home-page .navbar:not(.scrolled) .brand-name {
+    color: #ffffff !important;
+}
+
+/* --- 3. THE SCROLLED STATE (Home page flips to White) --- */
+.navbar.scrolled {
+    background: #ffffff !important;
+    padding: 15px 40px !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+}
+
+.navbar.scrolled a, .navbar.scrolled .brand-name {
+    color: rgba(33, 36, 35, 0.85) !important;
+}
+
+/* --- 4. THE TEAL ACTIVE LINK --- */
+/* This overrides everything else to ensure the active page is Teal */
+.navbar a.active {
+    color: #009688 !important;
+}
+
+/* --- 5. THE START READING BUTTON (Always Teal/White) --- */
+.navbar a.navbarb {
+    background-color: #009688 !important;
+    color: #ffffff !important;
+    padding: 1rem 1rem !important;
+    border-radius: 30px;
+}
+
+.navbar a:hover {
+  text-decoration: none;
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  /* Background image from public folder */
+  background: url("hero-bg.png") no-repeat center center / cover;
+
+  color: white;
+}
+
+.overlay {
+  background: none;
+  text-align: center;
+}
+
+.overlay h1 {
+  font-size: 70px;
+}
+
+.overlay p {
+  font-size: 24px;
+  margin: 1rem 0;
+}
+
+.button-group {
+  margin-top: 40px; /* Adjust this value to get the exact gap you want */
+  display: flex;
+  justify-content: center; /* Centers buttons horizontally */
+  gap: 20px; /* Creates space specifically between the two buttons */
+}
+
+.btn, .btn-outline {
+  /* Shared Styles */
+  display: inline-block;
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 24px;         /* Set font size to 24px */
+  vertical-align: middle;
+  box-sizing: border-box;
+  margin: 15px;
+  transition: 0.3s;       /* Optional: makes hover effects smooth */
+}
+
+.btn {
+  background-color: #009688;
+  color: white;
+  border: 1px solid transparent; /* Keeps the size identical to the outline button */
+}
+
+.btn-outline {
+  background: transparent;
+  color: white;
+  border: 1px solid white;
+}
+
+.library {
+  padding: 200px; /* Increase this so the title starts below the sticky area */
+  padding-left: 150px;
+  padding-right: 150px;
+  overflow: clip; /* This prevents the cards from being rendered outside the library bounds */
+  z-index: 1;
+}
+
+.library h1{
+  font-size: 64px;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+}
+
+.library h2{
+  font-size: 32px;
+  color: rgba(75, 85, 99, 0.9);
+  text-align: center;
+  margin-top: -30px;
+  font-weight: normal;
+}
+
+.library p{
+  font-size: 18px;
+  color: rgba(75, 85, 99, 0.9);
+  text-align: left;
+  font-weight: normal;
+}
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 70px;
+}
+
+/* Container Link */
+.book-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  perspective: 1000px; /* Gives a slight 3D depth to the zoom */
+}
+
+/* The Card itself */
+.book-card {
+  width: 100%;          /* fills its grid cell */
+  max-width: 580px;     /* optional limit */
+  margin: 0;            /* remove manual margins */
+  background: white;
+  border-radius: 24px;
+  overflow: hidden; /* This crops the image to the card's rounded corners */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  grid-template-columns: repeat(4, 1fr); /* always 4 per row */
+  
+  /* THIS IS THE KEY: */
+  transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+              box-shadow 1s ease;
+  
+  /* Prevents blurriness during animation */
+  will-change: transform; 
+
+  -webkit-font-smoothing: antialiased;
+  transform: translateZ(0); /* Forces 3D rendering for extra smoothness */
+
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.book-card img {
+  width: 100%;
+  height: 100%;
+}
+.book-card-link:hover .book-card {
+  /* Scale 1.05 makes it 5% larger. Adjust to 1.1 for a bigger zoom. */
+  transform: scale(1.05); 
+  
+  /* Elevate the shadow to make it look like it's lifting off the page */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.book-card-banner {
+  position: relative;
+  width: 100%;
+  height: 320px; 
+  overflow: hidden;
+  object-fit: cover; /* Ensures the image covers the entire banner area without distortion */
+}
+
+.book-cover {
+  width: 100%;
+  height: 100%; /* This is the "magic" property that fits the image nicely */
+  object-position: top; /* Ensures the top of the book cover is visible */
+}
+
+/* THE ANIMATION: Hover Effect */
+.book-card-link:hover .book-card {
+  transform: translateY(-10px); /* Lifts the card up */
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15); /* Makes the shadow deeper */
+}
+
+/* Subtle image zoom on hover */
+.book-card-link:hover img {
+  transform: scale(1.05);
+}
+
+.book-card-banner::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0);
+  transition: background 0.3s ease;
+}
+
+.book-card-link:hover .book-card-banner::after {
+  background: rgba(0,0,0,0.1); /* Subtle darkening */
+}
+
+.genre-text {
+    color: #ff6b6b !important;
+    font-size: 16px !important;
+    font-weight: normal;
+    margin-bottom: 8px;
+    margin-top: 0px;
+}
+
+.book-card-details h3 {
+    font-size: 20px;
+    margin: 0 0 5px 0;
+    color: #212423;
+    font-weight: bold !important;
+}
+
+.author-text {
+    color: #666;
+    font-size: 18px !important;
+    margin-bottom: 15px;
+}
+
+/* Badges (Rating and Level) */
+.rating-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 150, 136, 0.9);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.level-tag {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: white;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Text Info */
+.card-info {
+  padding: 15px;
+}
+
+.genre { color:  rgb(255, 107, 107); font-size: 12px; margin: 0; }
+.card-info h3 { margin: 5px 0; font-size: 24px; font-weight: bold; }
+.author { color: #666; font-size: 14px; margin: 0; }
+
+.book-info {
+  flex: 1;
+}
+
+.footer-stats {
+    font-size: 13px;
+    color: #888;
+}
+
+.read-btn-small {
+    background: #009688;
+    color: white !important;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.book-card-details {
+    padding: 20px;
+    flex-grow: 1;
+}
+
+.book-info h2 {
+  margin: 0.2rem 0;
+  font-size: 38px;
+  font-weight: bold;
+}
+
+.book-info p {
+  margin: 0.3rem 0;
+}
+
+.book-actions {
+  margin-top: 1.5rem;
+}
+
+.genre {
+  color: rgb(255, 107, 107) !important;
+  font-size: 16px !important;
+}
+
+.row {
+  display: flex;
+  gap: 10rem;
+  gap-bottom: 20px;
+  margin: 2rem;
+  text-align: center;
+}
+
+.label-gray {
+  color: rgba(107, 114, 128, 0.9); /* gray with slight opacity */
+  font-weight: normal;             /* ensures no bold */
+  font-size: 18px;
+}
+
+.description {
+  font-size: 24px !important;
+}
+
+.author {
+  font-size: 26px !important;
+  color: rgb(46, 49, 56); /* gray with slight opacity */
+}
+
+.size {
+  font-size: 28px;
+  color: black !important;
+  font-weight: bold;
+}
+
+.categories-filter {
+  display: flex;
+  flex-wrap: nowrap;       /* Prevents buttons from moving to the next line */
+  gap: 0.8rem;             /* Slightly more gap for better readability */
+  margin: 1.5rem 0;
+  overflow-x: auto;        /* Enables the horizontal scroll */
+  padding: 10px 5px;       /* Padding so shadows/borders aren't cut off */
+  width: 100%;
+  z-index: 1001; /* Slightly higher than sticky-header background */
+
+  /* Hide scrollbar for a cleaner look */
+  scrollbar-width: none;             /* Firefox */
+  -ms-overflow-style: none;          /* IE/Edge */
+  white-space: nowrap;              /* Ensures the container doesn't wrap its content */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+/* Hide scrollbar for Chrome/Safari */
+.categories-filter::-webkit-scrollbar {
+  display: none;
+}
+
+.filter {
+  padding: 0.6rem 1.2rem;
+  border: none;   /* Added subtle border to define shape */
+  border-radius: 30px;
+  background: white;
+  cursor: pointer;
+  font-size: 18px;
+  white-space: nowrap;      /* Crucial: prevents text inside button from wrapping */
+  flex-shrink: 0;           /* Prevents the buttons from squishing */
+  transition: all 0.3s ease;
+}
+
+.filter.active {
+  background: #009688;
+  color: white;
+  border-color: #009688;
+}
+
+.sticky-header {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 135px; /* THIS IS THE KEY: It sticks right below the navbar */
+  background-color: white;
+  z-index: 1000 !important; /* Just below the navbar */
+  padding: 20px 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border: none;
+  box-shadow: none;       /* Remove this if you don't want the bottom shadow yet */
+  background: white;
+  width: 100vw; /* Full viewport width */
+  margin-left: calc(-50vw + 50%); /* Centers it if the parent is narrow */
+  padding-left: 150px; /* Match your library padding to keep text aligned */
+  padding-right: 150px;
+  box-sizing: border-box;
+}
+
+/* Ensure nothing else has a higher z-index that could break this */
+.category-grid, .book-grid {
+    position: relative;
+    z-index: 1;
+}
+
+.search-container {
+  position: relative;
+  width: 60%;          /* Adjust width to match your layout */
+  max-width: 600px;
+  margin: 20px auto;   /* Centers the search bar */
+}
+
+.search-bar {
+  width: 100%;
+  padding: 12px 20px 12px 45px; /* Extra padding on the left for the icon */
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 30px; /* Makes it pill-shaped */
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.search-bar:focus {
+  border-color: #009688; /* Matches your theme color */
+  box-shadow: 0 0 8px rgba(0, 150, 136, 0.2);
+}
+
+.search-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  font-size: 18px;
+  pointer-events: none; /* Allows clicks to go through to the input */
+}
+
+/* Category Cards for categories.html */
+/* Container & Headers */
+.browse-section {
+    padding: 60px 5%;
+    background-color: #f8fafb;
+    text-align: center;
+    margin-top: 130px; /* Clears the navbar */
+}
+
+.header-content h1 {
+    font-size: 64px;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+}
+
+.header-content p {
+    color: #666;
+    margin-bottom: 40px;
+    font-size: 30px;
+}
+
+/* 3x3 Grid System */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Tablet: 2 columns | Mobile: 1 column */
+@media (max-width: 992px) { .card-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .card-grid { grid-template-columns: 1fr; } }
+
+.category-card {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    border: 1px solid #edf2f7;
+    transition: transform 0.2s ease;
+    height: auto;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Teal Header */
+.card-header {
+    background-color: #009688;
+    color: white;
+    padding: 25px;
+    text-align: left;
+}
+
+.icon-box {
+    background: rgba(255, 255, 255, 0.2);
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.icon-box img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+
+}
+
+.card-header h2 {
+    font-size: 1.25rem;
+    margin-bottom: 5px;
+}
+
+.card-header p {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.card-footer {
+    padding: 0 25px 25px 25px;
+}
+
+.view-btn {
+    display: block;
+    background-color: #009688;
+    color: white;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 50px;
+    font-weight: 600;
+    text-align: center;
+    transition: background 0.3s ease;
+}
+
+.view-btn:hover {
+    background-color: #007970;
+}
+
+/* Book List Section */
+.card-body {
+    padding: 20px;
+}
+
+.book-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.book-item img {
+    width: 50px;
+    height: 70px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.book-info h3 {
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.book-info p {
+    font-size: 12px;
+    color: #777;
+}
+
+/* The Button */
+.view-btn {
+    display: block;
+    background: #149184;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin: 0 20px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+    width: calc(100% - 40px); /* Full width minus horizontal margins */
+    font-size: 20px;
+}
+
+.view-btn:hover {
+    background: #0f7066;
+}
+
+/* Book Detail for book.html Page */
+.book-detail {
+  max-width: 1700px;
+  align-items: center;
+  padding: 2rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  max-height: 400px;
+  display: none; /* Start hidden, shown when clicking a book */
+
+  /* push section more left */
+  margin-left: 140px;   /* instead of auto centering */
+  margin-right: 140px;  /* keeps it aligned left */
+  margin-top: 180px; /* clears the navbar */
+  margin-bottom: 350px;
+}
+
+.book-header {
+  display: flex;
+  gap: 1rem; /* smaller gap between cover and info */
+  align-items: flex-start;
+}
+
+.book-cover-large {
+  max-width: 180px; /* smaller cover */
+}
+
+.progress {
+  margin-top: 8rem;
+  margin-left: -30px;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding: 3rem;
+  width: 98%;
+  background: white;
+  position: relative;
+}
+
+.progress-label {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 14px;
+  background: #eee;
+  border-radius: 7px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #009688; /* teal accent */
+  width: 0%; /* dynamically updated */
+  transition: width 0.3s ease;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: rgba(107, 109, 112, 0.9);
+}
+
+
+
+/* Container starts off-screen and invisible */
+main {
+    opacity: 0;
+    transform: translateX(20px); 
+    transition: all 0.5s ease-out;
+}
+
+/* The state after the page has 'loaded' */
+body.loaded main {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Tell the browser NOT to animate the navbar during the page transition */
+.navbar {
+  view-transition-name: main-nav;
+}
+
+::view-transition-group(main-nav) {
+  animation: none; /* The navbar stays perfectly still while content slides */
+}
+
+/* View Transition Animations */
+@view-transition {
+  navigation: auto;
+}
+
+/* Setup timing and force old page to stay visible to prevent flashing */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+}
+
+/* FORWARD (Default): Slide Up from bottom */
+::view-transition-new(root) {
+  animation-name: slide-up;
+}
+
+/* BACK (Condition): Slide Down from top */
+.back-transition::view-transition-new(root) {
+  animation-name: slide-down !important;
+}
+
+@keyframes slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes slide-down {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+/* Keep the Navbar pinned so it doesn't move with the pages */
+.navbar {
+  view-transition-name: main-nav;
+}
+
+::view-transition-group(main-nav) {
+  animation: none;
+}
+
+/* Footer Base */
+.main-footer {
+    background-color: #009688;
+    color: white;
+    padding: 60px 0 20px 0;
+    font-family: sans-serif;
+    position: relative;
+    text-decoration: none !important;
+}
+
+.footer-container {
+    max-width: 1500px;
+    margin-left: 4rem;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5%;
+    gap: 100px;
+    font-size: 18px !important;
+}
+
+/* Brand Section */
+.footer-brand {
+    flex: 2; /* Takes up more space */
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.footer-logo img {
+    width: 40px;
+}
+
+.footer-logo h2 {
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.mission-statement {
+    line-height: 1.6;
+    margin-bottom: 25px;
+    max-width: 550px;
+    font-size: 1.3rem;
+    opacity: 0.9;
+}
+
+/* Social Icons */
+.social-links {
+    display: flex;
+    gap: 15px;
+}
+
+.social-links a {
+    color: white;
+    background: rgba(255,255,255,0.15);
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.social-links a:hover {
+    background: rgba(255,255,255,0.3);
+    transform: translateY(-3px);
+}
+
+.social-links img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+/* Link Columns */
+.footer-links {
+    flex: 0.9;
+    text-decoration: none !important;
+}
+
+.footer-links h3 {
+    font-size: 1.5rem;
+    margin-bottom: 35px;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 35px;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    opacity: 0.8;
+    transition: 0.2s;
+}
+
+.footer-links a:hover {
+    opacity: 1;
+}
+
+.footer-links img {
+    width: 16px !important;
+    height: 16px !important;
+    object-fit: contain;
+}
+
+/* Bottom Copyright Bar */
+.footer-bottom {
+    max-width: 1500px;
+    margin: 0 100px 0;
+    margin-left: 10rem !important;
+    margin-right: 10rem !important;
+    padding: 25px 5% 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.21);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    opacity: 0.8;
+    gap: 650px !important;
+    font-size: 18px !important;
+}
+
+.footer-bottom p {
+    display: flex;
+    align-items: left;
+    margin-left: -6rem !important;
+}
+
+.powered-by {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 1500px;
+    margin-left: 8rem !important;
+}
+
+/* Floating Chat Button (Fixed to Screen) */
+.chat-widget {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+}
+
+.talk-btn {
+    background: black;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+}
+
+.talk-btn .icon { color: #0d9488; /* turquoise accent */ font-size: 20px; }
+
+.talk-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+    }
+    .footer-brand, .mission-statement {
+        max-width: 100%;
+    }
+    .social-links {
+        justify-content: center;
+    }
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between; /* Pushes pages to left, time to right */
+  align-items: center;
+  padding: 12px 15px;
+  background-color: #f9f9f9; /* Light background to separate from card body */
+  border-top: 1px solid #eeeeee;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  font-size: 0.85rem;
+  color: #666666; /* Subtle gray text */
+  height: auto;
+}
+
+.footer-item {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Space between icon and text */
+}
+
+.footer-item i {
+  font-style: normal;
+}
+
+/* FAQ Accordion Styling */
+.faq-section {
+  padding: 50px 0;
+}
+
+.faq-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.faq-section h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.intro-text {
+  text-align: center;
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 50px;
+}
+
+.faq-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* FAQ Item Container */
+.faq-item {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border: 1px solid #f0f0f0;
+}
+
+/* FAQ Question Button */
+.faq-question {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #333;
+  text-align: left;
+  transition: background-color 0.3s ease;
+}
+
+.faq-question:hover {
+  background-color: #f8f8f8;
+}
+
+.faq-question span:first-child {
+  flex: 1;
+}
+
+.arrow {
+  color: #009688;
+  font-size: 0.85rem;
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+/* FAQ Answer Panel */
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  padding: 0 20px;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Active State */
+.faq-item.active .faq-answer {
+  max-height: 500px;
+  padding-bottom: 20px;
+}
+
+.faq-item.active .faq-question {
+  background-color: #f8f8f8;
+  border-bottom: 2px solid #009688;
+}
+
+.faq-item.active .arrow {
+  transform: rotate(180deg);
+  color: #009688;
+}
+
+.faq-answer a {
+  color: #009688;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.faq-answer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .faq-section h1 {
+    font-size: 1.8rem;
+  }
+  
+  .faq-question {
+    padding: 15px;
+    font-size: 0.95rem;
+  }
+  
+  .faq-answer {
+    padding: 0 15px;
+  }
+  
+  .faq-item.active .faq-answer {
+    padding-bottom: 15px;
+  }
+}
+
+/* Contact Page Styling */
+.contact-section {
+  padding: 50px 0;
+}
+
+.contact-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.contact-section h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.contact-section .intro-text {
+  text-align: center;
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 50px;
+}
+
+.contact-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 50px;
+}
+
+.contact-form-wrapper {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.contact-form-wrapper h2 {
+  margin-bottom: 30px;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fcfcfc;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #009688;
+  box-shadow: 0 0 8px rgba(0, 150, 136, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.char-count {
+  font-size: 0.8rem;
+  color: #999;
+  text-align: right;
+  margin-top: 5px;
+}
+
+.contact-form-wrapper .btn {
+  width: 100%;
+  margin: 20px 0 0 0;
+}
+
+/* Contact Info Section */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.contact-info h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.info-item {
+  background: #009688;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.info-item h3 {
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.info-item p {
+  color: #ffffff;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.info-item a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.info-item a:hover {
+  text-decoration: underline;
+}
+
+.social-contact {
+  margin-top: 20px;
+}
+
+.social-contact h3 {
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+
+.social-links-contact {
+  display: flex;
+  gap: 15px;
+}
+
+.social-links-contact a {
+  display: inline-block;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: rgba(0, 150, 135, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.social-links-contact a:hover {
+  background: rgb(31, 138, 127);
+  transform: translateY(-2px);
+}
+
+.social-links-contact img {
+  width: 24px;
+  height: 24px;
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+  .contact-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-section h1 {
+    font-size: 2rem;
+  }
+  
+  .contact-form-wrapper {
+    padding: 20px;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 10px;
+  }
+  
+  .info-item {
+    padding: 20px;
+  }
+}
+
+/* Reader Layout */
+.nav-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#reader-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+
+#reader-wrapper::-webkit-scrollbar-track {
+    background: #1e293b;
+}
+
+#reader-wrapper::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 10px;
+}
+
+.reset-link {
+    background: transparent;
+    color: #94a3b8; /* Subtle gray */
+    border: none;
+    text-decoration: underline;
+    font-size: 0.8rem;
+    cursor: pointer;
+    margin-left: 15px;
+    transition: color 0.2s;
+}
+
+.reset-link:hover {
+    color: #ef4444; /* Turns red when hovering to show it's a delete action */
+}

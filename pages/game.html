@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReadQuest Player</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <style>
+        :root { --teal: #0d9488; --white: #ffffff; --border: #e2e8f0; }
+        body, html { margin: 0; padding: 0; height: 100%; background-color: #f1f5f9; font-family: 'Inter', sans-serif; overflow: hidden; }
+
+        .reader-header {
+            position: fixed; top: 0; left: 0; right: 0; height: 60px;
+            background: var(--white); display: flex; align-items: center; justify-content: space-between;
+            padding: 0 30px; z-index: 1000; border-bottom: 3px solid var(--teal);
+        }
+
+        .brand-group { display: flex; align-items: center; gap: 15px; flex: 1; }
+        .nav-logo { height: 45px; width: auto; }
+        .book-title { color: var(--teal); font-weight: 800; font-size: 1.1rem; margin: 0; text-transform: uppercase; }
+
+        .nav-controls { display: flex; align-items: center; gap: 8px; flex: 1; justify-content: center; }
+        .btn-nav { background: var(--teal); color: var(--white); border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .page-display { border: 2px solid var(--teal); color: var(--teal); font-weight: bold; padding: 6px 12px; border-radius: 4px; }
+
+        .exit-container { flex: 1; display: flex; justify-content: flex-end; }
+        .exit-link { text-decoration: none; color: var(--teal); font-weight: bold; border: 2px solid var(--teal); padding: 6px 15px; border-radius: 4px; }
+
+        #main-viewport { height: 100vh; overflow-y: auto; display: flex; flex-direction: column; align-items: center; padding-top: 60px; }
+
+        /* The Canvas replaces the Iframe for a cleaner look */
+        #pdf-canvas { 
+            background: white; 
+            box-shadow: 0 0 20px rgba(0,0,0,0.1); 
+            max-width: 100%; 
+            height: auto !important; 
+        }
+
+        .reader-footer { width: 100%; background: var(--white); padding: 40px 0; text-align: center; border-top: 1px solid var(--border); }
+        .btn-large { background: var(--teal); color: var(--white); border: none; padding: 15px 40px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <header class="reader-header">
+        <div class="brand-group">
+            <img src="https://public.readdy.ai/ai/img_res/a36c0863-385e-4f1d-89e6-2c3fcb419eb2.png" alt="Logo" class="nav-logo">
+            <h1 class="book-title" id="book-title">READQUEST</h1>
+        </div>
+        <div class="nav-controls">
+            <button class="btn-nav" id="prev-top">PREV</button>
+            <div class="page-display"><span id="pg-top">1</span></div>
+            <button class="btn-nav" id="next-top">NEXT</button>
+        </div>
+        <div class="exit-container"><a href="book.html" class="exit-link">EXIT</a></div>
+    </header>
+
+    <div id="main-viewport">
+        <canvas id="pdf-canvas"></canvas>
+
+        <footer class="reader-footer">
+            <h2 style="color:var(--teal)">CONTINUE YOUR QUEST</h2>
+            <div style="display: flex; justify-content: center; gap: 15px;">
+                <button class="btn-large" id="prev-bottom" style="background:white; color:var(--teal); border:2px solid var(--teal)">BACK</button>
+                <button class="btn-large" id="next-bottom">NEXT PAGE</button>
+            </div>
+            <p style="margin-top: 20px; color: #64748b;">Progress: <span id="pg-bottom">1</span> / <span id="total-pg">?</span></p>
+        </footer>
+    </div>
+
+    <script>
+const pdfjsLib = window['pdfjs-dist/build/pdf'];
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+
+const bID = new URLSearchParams(window.location.search).get('id');
+let pdfDoc = null, 
+    pageNum = parseInt(localStorage.getItem(`book_${bID}_page`)) || 1, 
+    checkpointPage = null,
+    isRendering = false; // Prevents "button mashing" bugs
+
+// 1. Fetch Book Data
+fetch('../books.json')
+    .then(res => res.json())
+    .then(data => {
+        if(data[bID]) {
+            document.getElementById('book-title').innerText = data[bID].title;
+            checkpointPage = data[bID].checkpoint;
+            initPDF();
+        }
+    });
+
+function initPDF() {
+    pdfjsLib.getDocument(`../pdfs/${bID}.pdf`).promise.then((pdfDoc_) => {
+        pdfDoc = pdfDoc_;
+        document.getElementById('total-pg').textContent = pdfDoc.numPages;
+        renderPage(pageNum);
+    });
+}
+
+function renderPage(num) {
+    if (isRendering) return; // Prevent overlapping renders
+    isRendering = true;
+
+    pdfDoc.getPage(num).then((page) => {
+        const canvas = document.getElementById('pdf-canvas');
+        const ctx = canvas.getContext('2d');
+        const viewport = page.getViewport({scale: 1.5});
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        const renderContext = { canvasContext: ctx, viewport: viewport };
+        page.render(renderContext).promise.then(() => {
+            isRendering = false;
+            
+            // Check for checkpoint
+            // We check a 'passed' flag so they don't get stuck if they return to this page
+            const hasPassed = localStorage.getItem(`book_${bID}_checkpoint_passed`) === 'true';
+            if (num === checkpointPage && !hasPassed) {
+                triggerCheckpoint();
+            }
+        });
+    });
+
+    // Update UI Labels
+    document.getElementById('pg-top').textContent = num;
+    document.getElementById('pg-bottom').textContent = num;
+    updateStorage(num);
+}
+
+// --- MISSING PAGE SWITCHING LOGIC ---
+
+function onNextPage() {
+    if (pageNum >= pdfDoc.numPages || isRendering) return;
+    pageNum++;
+    renderPage(pageNum);
+}
+
+function onPrevPage() {
+    if (pageNum <= 1 || isRendering) return;
+    // If they move back from a checkpoint, allow the checkpoint to trigger again later
+    if (pageNum === checkpointPage) {
+        localStorage.removeItem(`book_${bID}_checkpoint_passed`);
+    }
+    pageNum--;
+    renderPage(pageNum);
+}
+
+function updateStorage(num) {
+    const pct = Math.round((num / pdfDoc.numPages) * 100);
+    localStorage.setItem(`book_${bID}_progress`, JSON.stringify({ lastPage: num, percent: pct }));
+    localStorage.setItem(`book_${bID}_page`, num);
+}
+
+function triggerCheckpoint() {
+    setTimeout(() => {
+        // Set flag so they can return to this page without triggering the alert again
+        localStorage.setItem(`book_${bID}_checkpoint_passed`, 'true');
+        alert("Quest Checkpoint Reached!");
+        window.location.href = `/pages/games/questions.html?id=${bID}`;
+    }, 500);
+}
+
+// 2. Link the buttons to the functions
+document.getElementById('next-top').addEventListener('click', onNextPage);
+document.getElementById('prev-top').addEventListener('click', onPrevPage);
+document.getElementById('next-bottom').addEventListener('click', onNextPage);
+document.getElementById('prev-bottom').addEventListener('click', onPrevPage);
+
+// ... keep your existing onPrevPage, onNextPage, and updateStorage functions ...
+    </script>
+</body>
+</html>

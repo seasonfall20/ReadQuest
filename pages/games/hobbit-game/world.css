@@ -1,0 +1,37 @@
+body {
+    background-color: #1a1a1a; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+#canvas {
+    border: 8px solid #3e2723; /* Dark wood-style border */
+    border-radius: 4px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.8);
+    image-rendering: pixelated; /* Essential for that sharp Stardew look */
+}
+
+#game {
+  position: relative;
+}
+
+/* Dialogue UI */
+#dialogueBox {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  padding: 15px;
+  background: transparent;
+  color: white;
+  border-radius: 10px;
+}
+
+.hidden {
+  display: none;
+}

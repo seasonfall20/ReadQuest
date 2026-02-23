@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReadQuest</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+  <div class="logo-container">
+    <img src="https://public.readdy.ai/ai/img_res/a36c0863-385e-4f1d-89e6-2c3fcb419eb2.png" alt="Logo" class="nav-logo">
+    <h1 class="brand-name">ReadQuest</h1>
+    </div>
+    <div>
+      <a href="/index.html">Home</a>
+      <a href="/pages/library.html">Library</a>
+      <a href="/pages/categories.html">Categories</a>
+      <a href="/pages/about.html">About</a>
+      <a href="/pages/faq.html">FAQ</a>
+      <a href="/pages/contact.html">Contact</a>
+      <a href="/pages/library.html" class="navbarb">Start Reading</a>
+  </div>
+</nav>
+
+
+  <!-- Library Section -->
+  <section class="library">
+  
+    <h1>Library</h1>
+    <h2>Discover your next great read from our curated collection</h2><br>
+
+    <!-- Search Bar -->
+  <div class="sticky-header">
+    <div class="search-container">
+      <i class="fa fa-search search-icon">🔍</i>
+      <input type="text" class="search-bar" placeholder="Search books...">
+    </div>
+    <!-- Category Filters -->
+    <div class="categories-filter">
+      <button class="filter active">All Books</button>
+      <button class="filter">21<sup>st</sup> Century Literature</button>
+      <button class="filter">Science and Technology</button>
+      <button class="filter">Filipiniana</button>
+      <button class="filter">Romance</button>
+      <button class="filter">Adventure</button>
+      <button class="filter">Science Fiction</button>
+      <button class="filter">How-to/Guides</button>
+      <button class="filter">Epic Poetry</button>
+      <button class="filter">Mathematics</button>
+    </div>
+  </div>
+  <p id="book-count"></p>
+
+<!-- Book Grid -->
+<div class="book-grid">
+
+  <!-- Book 1 -->
+  <a href="/pages/book.html?id=1" class="book-card-link" data-category="classic">
+    <div class="book-card">
+      <div class="book-card-banner">
+        <img src="/pages/covers/mockingbird.jpg" alt="To Kill a Mockingbird" class="book-cover">
+        <span class="rating-badge">★ 4.3</span>
+        <span class="level-tag">Intermediate</span>
+      </div>
+      <div class="book-card-details">
+        <p class="genre-text">Classic Literature</p>
+        <h3>To Kill A Mockingbird</h3>
+        <p class="author-text">by Harper Lee</p>
+      </div>
+      <div class="card-footer">
+        <span class="footer-item"><i class="icon">📄</i> 324p</span>
+        <span class="footer-item"><i class="icon">⏰</i> 6 hours</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- Book 2 -->
+  <a href="/pages/book.html?id=2" class="book-card-link" data-category="science-tech">
+    <div class="book-card">
+      <div class="book-card-banner">
+        <img src="/pages/covers/ai.jpg" alt="Co-Intelligence" class="book-cover">
+        <span class="rating-badge">★ 4.0</span>
+        <span class="level-tag">Advanced</span>
+      </div>
+      <div class="book-card-details">
+        <p class="genre-text">Science and Technology</p>
+        <h3>Co-Intelligence: Living and Working With AI</h3>
+        <p class="author-text">by Ethan Mollick</p>
+      </div>
+      <div class="card-footer">
+        <span class="footer-item"><i class="icon">📄</i> 256p</span>
+        <span class="footer-item"><i class="icon">⏰</i> 5 hours</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- Book 3 -->
+  <a href="/pages/book.html?id=3" class="book-card-link" data-category="adventure">
+    <div class="book-card">
+      <div class="book-card-banner">
+        <img src="/pages/covers/hobbit.jpg" alt="The Hobbit" class="book-cover">
+        <span class="rating-badge">★ 4.8</span>
+        <span class="level-tag">Intermediate</span>
+      </div>
+      <div class="book-card-details">
+        <p class="genre-text">Adventure</p>
+        <h3>The Hobbit</h3>
+        <p class="author-text">by J.R.R. Tolkien</p>
+      </div>
+      <div class="card-footer">
+        <span class="footer-item"><i class="icon">📄</i> 324p</span>
+        <span class="footer-item"><i class="icon">⏰</i> 6 hours</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- Book 4 -->
+  <a href="/pages/book.html?id=4" class="book-card-link" data-category="filipiniana">
+    <div class="book-card">
+      <div class="book-card-banner">
+        <img src="/pages/covers/abnkkbsnplako.jpg" alt="ABNKKBSNPLAko?!" class="book-cover">
+        <span class="rating-badge">★ 4.5</span>
+        <span class="level-tag">Beginner</span>
+      </div>
+      <div class="book-card-details">
+        <p class="genre-text">Filipiniana</p>
+        <h3>ABNKKBSNPLAko?!</h3>
+        <p class="author-text">by Bob Ong</p>
+      </div>
+      <div class="card-footer">
+        <span class="footer-item"><i class="icon">📄</i> 192p</span>
+        <span class="footer-item"><i class="icon">⏰</i> 4 hours</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- Book 5 -->
+  <a href="/pages/book.html?id=5" class="book-card-link" data-category="filipiniana">
+    <div class="book-card">
+      <div class="book-card-banner">
+        <img src="/pages/covers/dekada70.jpg" alt="Dekada ’70" class="book-cover">
+        <span class="rating-badge">★ 4.7</span>
+        <span class="level-tag">Intermediate</span>
+      </div>
+      <div class="book-card-details">
+        <p class="genre-text">Filipiniana</p>
+        <h3>Dekada ’70</h3>
+        <p class="author-text">by Lualhati Bautista</p>
+      </div>
+      <div class="card-footer">
+        <span class="footer-item"><i class="icon">📄</i> 250p</span>
+        <span class="footer-item"><i class="icon">⏰</i> 5 hours</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- Book 6 -->
+  <a href="/pages/book.html?id=6" class="book-card-link" data-category="filipiniana">
+    <div class="book-card">
+      <div class="book-card-banner">
+        <img src="/pages/covers/ibon.webp" alt="Mga Ibong Mandaragit" class="book-cover">
+        <span class="rating-badge">★ 4.6</span>
+        <span class="level-tag">Advanced</span>
+      </div>
+      <div class="book-card-details">
+        <p class="genre-text">Filipiniana</p>
+        <h3>Mga Ibong Mandaragit</h3>
+        <p class="author-text">by Amado V. Hernandez</p>
+      </div>
+      <div class="card-footer">
+        <span class="footer-item"><i class="icon">📄</i> 300p</span>
+        <span class="footer-item"><i class="icon">⏰</i> 6 hours</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- Book 7 -->
+  <a href="/pages/book.html?id=7" class="book-card-link" data-category="filipiniana">
+    <div class="book-card">
+      <div class="book-card-banner">
+        <img src="/pages/covers/samgakuko.jpg" alt="Sa Mga Kuko ng Liwanag" class="book-cover">
+        <span class="rating-badge">★ 4.4</span>
+        <span class="level-tag">Intermediate</span>
+      </div>
+      <div class="book-card-details">
+        <p class="genre-text">Filipiniana</p>
+        <h3>Sa Mga Kuko ng Liwanag</h3>
+        <p class="author-text">by Edgardo M. Reyes</p>
+      </div>
+      <div class="card-footer">
+        <span class="footer-item"><i class="icon">📄</i> 280p</span>
+        <span class="footer-item"><i class="icon">⏰</i> 5 hours</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- Book 8 -->
+  <a href="/pages/book.html?id=8" class="book-card-link" data-category="filipiniana">
+    <div class="book-card">
+      <div class="book-card-banner">
+        <img src="/pages/covers/gapo.jpg" alt="Gapô" class="book-cover">
+        <span class="rating-badge">★ 4.5</span>
+        <span class="level-tag">Intermediate</span>
+      </div>
+      <div class="book-card-details">
+        <p class="genre-text">Filipiniana</p>
+        <h3>Gapô</h3>
+        <p class="author-text">by Lualhati Bautista</p>
+      </div>
+      <div class="card-footer">
+        <span class="footer-item"><i class="icon">📄</i> 260p</span>
+        <span class="footer-item"><i class="icon">⏰</i> 5 hours</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- Book 9 -->
+  <a href="/pages/book.html?id=9" class="book-card-link" data-category="21st-century">
+    <div class="book-card">
+      <div class="book-card-banner">
+        <img src="/pages/covers/brilliantfriend.jpg" alt="My Brilliant Friend" class="book-cover">
+        <span class="rating-badge">★ 4.3</span>
+        <span class="level-tag">Advanced</span>
+      </div>
+      <div class="book-card-details">
+        <p class="genre-text">21st Century Literature</p>
+        <h3>My Brilliant Friend</h3>
+        <p class="author-text">by Elena Ferrante</p>
+      </div>
+      <div class="card-footer">
+        <span class="footer-item"><i class="icon">📄</i> 331p</span>
+        <span class="footer-item"><i class="icon">⏰</i> 7 hours</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- Book 10 -->
+  <a href="/pages/book.html?id=10" class="book-card-link" data-category="romance">
+    <div class="book-card">
+      <div class="book-card-banner">
+        <img src="/pages/covers/sayyoullrememberme.jpg" alt="Say You'll Remember Me" class="book-cover">
+        <span class="rating-badge">★ 4.2</span>
+        <span class="level-tag">Intermediate</span>
+      </div>
+      <div class="book-card-details">
+        <p class="genre-text">Romance</p>
+        <h3>Say You'll Remember Me</h3>
+        <p class="author-text">by Katie McGarry</p>
+      </div>
+      <div class="card-footer">
+        <span class="footer-item"><i class="icon">📄</i> 400p</span>
+        <span class="footer-item"><i class="icon">⏰</i> 8 hours</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- Book 11 -->
+  <a href="/pages/book.html?id=11" class="book-card-link" data-category="filipiniana">
+    <div class="book-card">
+      <div class="book-card-banner">
+        <img src="/pages/covers/florante-at-laura.png" alt="Florante at Laura" class="book-cover">
+        <span class="rating-badge">★ 4.6</span>
+        <span class="level-tag">Intermediate</span>
+      </div>
+      <div class="book-card-details">
+        <p class="genre-text">Filipiniana</p>
+        <h3>Florante at Laura</h3>
+        <p class="author-text">by Francisco Balagtas</p>
+      </div>
+      <div class="card-footer">
+        <span class="footer-item"><i class="icon">📄</i> 180p</span>
+        <span class="footer-item"><i class="icon">⏰</i> 3 hours</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- Book 12 -->
+  <a href="/pages/book.html?id=12" class="book-card-link" data-category="mathematics">
+    <div class="book-card">
+      <div class="book-card-banner">
+        <img src="/pages/covers/mathematics.svg" alt="Flatland" class="book-cover">
+        <span class="rating-badge">★ 4.1</span>
+        <span class="level-tag">Beginner</span>
+      </div>
+      <div class="book-card-details">
+        <p class="genre-text">Mathematics</p>
+        <h3>Algebra and Trigonometry</h3>
+        <p class="author-text">by Jay Abramson</p>
+      </div>
+      <div class="card-footer">
+        <span class="footer-item"><i class="icon">📄</i> 96p</span>
+        <span class="footer-item"><i class="icon">⏰</i> 2 hours</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- Book 13 -->
+  <a href="/pages/book.html?id=13" class="book-card-link" data-category="epic-poetry">
+    <div class="book-card">
+      <div class="book-card-banner">
+        <img src="/pages/covers/epicpoetry.jpg" alt="Beowulf" class="book-cover">
+        <span class="rating-badge">★ 4.2</span>
+        <span class="level-tag">Intermediate</span>
+      </div>
+      <div class="book-card-details">
+        <p class="genre-text">Epic Poetry</p>
+        <h3>Beowulf</h3>
+        <p class="author-text">Anonymous</p>
+      </div>
+      <div class="card-footer">
+        <span class="footer-item"><i class="icon">📄</i> 200p</span>
+        <span class="footer-item"><i class="icon">⏰</i> 4 hours</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- Book 14 -->
+  <a href="/pages/book.html?id=14" class="book-card-link" data-category="how-to">
+    <div class="book-card">
+      <div class="book-card-banner">
+        <img src="/pages/covers/manual.avif" alt="A practical guide for making post-mortem examinations" class="book-cover">
+        <span class="rating-badge">★ 4.3</span>
+        <span class="level-tag">Advanced</span>
+      </div>
+      <div class="book-card-details">
+        <p class="genre-text">How-To / Guide</p>
+        <h3>A Practical Guide for Making Post-Mortem Examinations</h3>
+        <p class="author-text">by A.R Thomas</p>
+      </div>
+      <div class="card-footer">
+        <span class="footer-item"><i class="icon">📄</i> 600p</span>
+        <span class="footer-item"><i class="icon">⏰</i> 12 hours</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- Book 15 -->
+  <a href="/pages/book.html?id=15" class="book-card-link" data-category="sci-fi">
+    <div class="book-card">
+      <div class="book-card-banner">
+        <img src="/pages/covers/poseidon.jpg" alt="The Rings of Poseidon" class="book-cover">
+        <span class="rating-badge">★ 5.0</span>
+        <span class="level-tag">Intermediate</span>
+      </div>
+      <div class="book-card-details">
+        <p class="genre-text">Science Fiction</p>
+        <h3>The Rings of Poseidon</h3>
+        <p class="author-text">by Mike Crowson</p>
+      </div>
+      <div class="card-footer">
+        <span class="footer-item"><i class="icon">📄</i> Varies</span>
+        <span class="footer-item"><i class="icon">⏰</i> Varies</span>
+      </div>
+    </div>
+  </a>
+
+</div>
+
+</section>
+<!-- Footer -->
+  <footer class="main-footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <img src="https://public.readdy.ai/ai/img_res/a36c0863-385e-4f1d-89e6-2c3fcb419eb2.png" alt="ReadQuest Logo">
+        <h2>ReadQuest</h2>
+      </div>
+      <p class="mission-statement">
+        Empowering grade 11 students with an interactive reading experience. 
+        Discover classic literature, engage with interactive games, and enhance your learning journey.
+      </p>
+      <div class="social-links">
+        <a href="#"><img src="/pages/covers/facebook.png" alt="Facebook"></img></a>
+        <a href="#"><img src="/pages/covers/twitter.png" alt="Twitter"></img></a>
+        <a href="#"><img src="/pages/covers/instagram.png" alt="Instagram"></img></a>
+        <a href="#"><img src="/pages/covers/tiktok.png" alt="YouTube"></img></a>
+      </div>
+    </div>
+
+    <div class="footer-links">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="/pages/library.html">Browse Library</a></li> 
+        <li><a href="/pages/categories.html">Categories</a></li>   
+        <li><a href="/pages/about.html">About Us</a></li>  
+        <li><a href="/pages/faq.html">FAQ</a></li>  
+      </ul>
+    </div>
+
+    <div class="footer-links">
+      <h3>Support</h3>
+      <ul>
+        <li><a href="/pages/contact.html">Contact Us</a></li>
+        <li><a href="/pages/help.html">Help Center</a></li>
+        <li><a href="/pages/privacy-policy.html">Privacy Policy</a></li>
+        <li><a href="/pages/terms-of-service.html">Terms of Service</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 ReadQuest Library. All rights reserved.</p>
+    <div class="powered-by">Powered by: <span>ReadQuest Team</span></div>
+  </div>
+
+  <div class="chat-widget">
+    <button class="talk-btn">
+      <i class="icon">👨🏻‍💻</i>
+      Talk with Us
+    </button>
+  </div>
+</footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>
+
+

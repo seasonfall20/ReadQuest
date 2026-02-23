@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReadQuest</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+  <div class="logo-container">
+    <img src="https://public.readdy.ai/ai/img_res/a36c0863-385e-4f1d-89e6-2c3fcb419eb2.png" alt="Logo" class="nav-logo">
+    <h1 class="brand-name">ReadQuest</h1>
+    </div>
+    <div>
+      <a href="/index.html">Home</a>
+      <a href="/pages/library.html">Library</a>
+      <a href="/pages/categories.html">Categories</a>
+      <a href="/pages/about.html">About</a>
+      <a href="/pages/faq.html">FAQ</a>
+      <a href="/pages/contact.html">Contact</a>
+      <a href="/pages/library.html" class="navbarb">Start Reading</a>
+  </div>
+</nav>
+
+<!-- Book Details -->
+
+
+ <!-- Book 1 -->
+<section id="book-1" class="book-detail">
+  <div class="book-header">
+    <img src="/pages/covers/mockingbird.jpg" alt="To Kill a Mockingbird" class="book-cover-large">
+    <div class="book-info">
+      <p class="genre">Classic Literature</p>
+      <h2>To Kill a Mockingbird</h2>
+      <p class="author">by Harper Lee</p><br>
+      <p class="description">
+        A gripping tale of racial injustice and childhood innocence in the American South.
+      </p><br>
+      <div class="row">
+        <p><span class="label-gray">Pages</span><br><strong class="size">324</strong></p>
+        <p><span class="label-gray">Time</span><br><strong class="size">6 hours</strong></p>
+        <p><span class="label-gray">Rating</span><br><strong class="size">⭐4.8</strong></p>
+        <p><span class="label-gray">Level</span><br><strong class="size">Intermediate</strong></p>
+      </div>
+      <div class="book-actions">
+        <a href="/pages/game.html?id=1" class="btn">Read Now</a>
+        <button onclick="resetBookProgress('1')" class="reset-link">Reset Quest</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress">
+    <div class="progress-label">
+      <span>Reading Progress</span>
+      <span style="color: #0d9488;">0% Complete</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" style="width: 0.2%;"></div>
+    </div>
+    <div class="progress-info">
+      <span>Page 1 </span>
+      <span>of 256</span>
+    </div>
+  </div>
+</section>
+
+<!-- Book 2 -->
+<section id="book-2" class="book-detail">
+  <div class="book-header">
+    <img src="/pages/covers/ai.jpg" alt="Co-Intelligence" class="book-cover-large">
+    <div class="book-info">
+      <p class="genre">Science and Technology</p>
+      <h2>Co-Intelligence: Living and Working With AI</h2>
+      <p class="author">by Ethan Mollick</p><br>
+      <p class="description">
+        An essential guide to understanding how to partner with AI to augment human intelligence.
+      </p><br>
+      <div class="row">
+        <p><span class="label-gray">Pages</span><br><strong class="size">256</strong></p>
+        <p><span class="label-gray">Time</span><br><strong class="size">5 hours</strong></p>
+        <p><span class="label-gray">Rating</span><br><strong class="size">⭐4.0</strong></p>
+        <p><span class="label-gray">Level</span><br><strong class="size">Advanced</strong></p>
+      </div>
+      <div class="book-actions">
+        <a href="/pages/game.html?id=2" class="btn">Read Now</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress">
+    <div class="progress-label">
+      <span>Reading Progress</span>
+      <span style="color: #0d9488;">0% Complete</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" style="width: 0.2%;"></div>
+    </div>
+    <div class="progress-info">
+      <span>Page 1 </span>
+      <span>of 256</span>
+    </div>
+  </div>
+</section>
+
+<!-- Book 3 -->
+<section id="book-3" class="book-detail">
+  <div class="book-header">
+    <img src="/pages/covers/hobbit.jpg" alt="The Hobbit" class="book-cover-large">
+    <div class="book-info">
+      <p class="genre">Adventure</p>
+      <h2>The Hobbit</h2>
+      <p class="author">by J.R.R. Tolkien</p><br>
+      <p class="description">
+        A gripping tale of racial injustice and childhood innocence in the American South.
+      </p><br>
+       <div class="row">
+        <p><span class="label-gray">Pages</span><br><strong class="size">324</strong></p>
+        <p><span class="label-gray">Time</span><br><strong class="size">6 hours</strong></p>
+        <p><span class="label-gray">Rating</span><br><strong class="size">⭐4.8</strong></p>
+        <p><span class="label-gray">Level</span><br><strong class="size">Intermediate</strong></p>
+        </div>
+      <div class="book-actions">
+        <a href="/pages/game.html?id=3" class="btn">Read Now</a>
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="progress">
+    <div class="progress-label">
+      <span>Reading Progress</span>
+      <span style="color: #0d9488;">0% Complete</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" style="width: 0.2%;"></div>
+    </div>
+    <div class="progress-info">
+      <span>Page 1 </span>
+      <span>of 256</span>
+    </div>
+  </div>
+</section>
+
+<!-- Book 4 -->
+<section id="book-4" class="book-detail">
+  <div class="book-header">
+    <img src="/pages/covers/abnkkbsnplako.jpg" alt="ABNKKBSNPLAko?!" class="book-cover-large">
+    <div class="book-info">
+      <p class="genre">Filipiniana</p>
+      <h2>ABNKKBSNPLAko?!</h2>
+      <p class="author">by Bob Ong</p><br>
+      <p class="description">
+        Isang nakakaaliw na aklat tungkol sa karanasan ng isang mag-aaral mula pagkabata hanggang pagtatapos, puno ng katatawanan at aral sa buhay at pag-aaral.
+      </p><br>
+      <div class="row">
+        <p><span class="label-gray">Pages</span><br><strong class="size">192</strong></p>
+        <p><span class="label-gray">Time</span><br><strong class="size">4 hours</strong></p>
+        <p><span class="label-gray">Rating</span><br><strong class="size">⭐4.5</strong></p>
+        <p><span class="label-gray">Level</span><br><strong class="size">Beginner</strong></p>
+      </div>
+      <div class="book-actions">
+        <a href="/pages/game.html?id=4" class="btn">Read Now</a>
+      </div>
+    </div>
+  </div>
+  <div class="progress">
+    <div class="progress-label">
+      <span>Reading Progress</span>
+      <span style="color: #0d9488;">0% Complete</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>
+    <div class="progress-info"><span>Page 1 </span><span>of 192</span></div>
+  </div>
+</section>
+
+<!-- Book 5 -->
+<section id="book-5" class="book-detail">
+  <div class="book-header">
+    <img src="/pages/covers/dekada70.jpg" alt="Dekada '70" class="book-cover-large">
+    <div class="book-info">
+      <p class="genre">Filipiniana</p>
+      <h2>Dekada ’70</h2>
+      <p class="author">by Lualhati Bautista</p><br>
+      <p class="description">
+        Isang nobela na naglalarawan ng buhay ng isang pamilyang Pilipino sa ilalim ng Batas Militar, tumatalakay sa politika, lipunan, at karapatan ng tao.
+      </p><br>
+      <div class="row">
+        <p><span class="label-gray">Pages</span><br><strong class="size">250</strong></p>
+        <p><span class="label-gray">Time</span><br><strong class="size">5 hours</strong></p>
+        <p><span class="label-gray">Rating</span><br><strong class="size">⭐4.7</strong></p>
+        <p><span class="label-gray">Level</span><br><strong class="size">Intermediate</strong></p>
+      </div>
+      <div class="book-actions">
+        <a href="/pages/game.html?id=5" class="btn">Read Now</a>
+      </div>
+    </div>
+  </div>
+  <div class="progress">
+    <div class="progress-label">
+      <span>Reading Progress</span>
+      <span style="color: #0d9488;">0% Complete</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>
+    <div class="progress-info"><span>Page 1 </span><span>of 250</span></div>
+  </div>
+</section>
+
+<!-- Book 6 -->
+<section id="book-6" class="book-detail">
+  <div class="book-header">
+    <img src="/pages/covers/mgaibongmandaragit.jpg" alt="Mga Ibong Mandaragit" class="book-cover-large">
+    <div class="book-info">
+      <p class="genre">Filipiniana</p>
+      <h2>Mga Ibong Mandaragit</h2>
+      <p class="author">by Amado V. Hernandez</p><br>
+      <p class="description">
+        Tumatalakay sa kahirapan, katiwalian, at pakikibaka ng mga Pilipino laban sa pang-aapi, ipinapakita ang panitikan bilang sandata sa paglaban para sa katarungan.
+      </p><br>
+      <div class="row">
+        <p><span class="label-gray">Pages</span><br><strong class="size">300</strong></p>
+        <p><span class="label-gray">Time</span><br><strong class="size">6 hours</strong></p>
+        <p><span class="label-gray">Rating</span><br><strong class="size">⭐4.6</strong></p>
+        <p><span class="label-gray">Level</span><br><strong class="size">Advanced</strong></p>
+      </div>
+      <div class="book-actions">
+        <a href="/pages/game.html?id=6" class="btn">Read Now</a>
+      </div>
+    </div>
+  </div>
+  <div class="progress">
+    <div class="progress-label">
+      <span>Reading Progress</span>
+      <span style="color: #0d9488;">0% Complete</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>
+    <div class="progress-info"><span>Page 1 </span><span>of 300</span></div>
+  </div>
+</section>
+
+<!-- Book 7 -->
+<section id="book-7" class="book-detail">
+  <div class="book-header">
+    <img src="/pages/covers/samgakuko.jpg" alt="Sa Mga Kuko ng Liwanag" class="book-cover-large">
+    <div class="book-info">
+      <p class="genre">Filipiniana</p>
+      <h2>Sa Mga Kuko ng Liwanag</h2>
+      <p class="author">by Edgardo M. Reyes</p><br>
+      <p class="description">
+        Isang nobela tungkol sa probinsyano na nakipagsapalaran sa Maynila, nakaranas ng pang-aabuso at kahirapan, naglalarawan ng mapait na realidad ng urbanisasyon.
+      </p><br>
+      <div class="row">
+        <p><span class="label-gray">Pages</span><br><strong class="size">280</strong></p>
+        <p><span class="label-gray">Time</span><br><strong class="size">5 hours</strong></p>
+        <p><span class="label-gray">Rating</span><br><strong class="size">⭐4.4</strong></p>
+        <p><span class="label-gray">Level</span><br><strong class="size">Intermediate</strong></p>
+      </div>
+      <div class="book-actions">
+        <a href="/pages/game.html?id=7" class="btn">Read Now</a>
+      </div>
+    </div>
+  </div>
+  <div class="progress">
+    <div class="progress-label">
+      <span>Reading Progress</span>
+      <span style="color: #0d9488;">0% Complete</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>
+    <div class="progress-info"><span>Page 1 </span><span>of 280</span></div>
+  </div>
+</section>
+
+<!-- Book 8 -->
+<section id="book-8" class="book-detail">
+  <div class="book-header">
+    <img src="/pages/covers/gapo.jpg" alt="Gapô" class="book-cover-large">
+    <div class="book-info">
+      <p class="genre">Filipiniana</p>
+      <h2>Gapô</h2>
+      <p class="author">by Lualhati Bautista</p><br>
+      <p class="description">
+        Tumatalakay sa diskriminasyon, kolonyalismo, at epekto ng presensya ng mga base militar ng Amerikano sa Olongapo. 
+        Nagbibigay ng mas malalim na pag-unawa sa mga isyung panlipunan at kultural na patuloy na nakakaapekto sa bansa, 
+        at nagbubukas ng diskurso tungkol sa identidad at kalayaan ng mga Pilipino.
+      </p><br>
+      <div class="row">
+        <p><span class="label-gray">Pages</span><br><strong class="size">260</strong></p>
+        <p><span class="label-gray">Time</span><br><strong class="size">5 hours</strong></p>
+        <p><span class="label-gray">Rating</span><br><strong class="size">⭐4.5</strong></p>
+        <p><span class="label-gray">Level</span><br><strong class="size">Intermediate</strong></p>
+      </div>
+      <div class="book-actions">
+        <a href="/pages/game.html?id=8" class="btn">Read Now</a>
+      </div>
+    </div>
+  </div>
+  <div class="progress">
+    <div class="progress-label">
+      <span>Reading Progress</span>
+      <span style="color: #0d9488;">0% Complete</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" style="width: 0%;"></div>
+    </div>
+    <div class="progress-info">
+      <span>Page 1 </span>
+      <span>of 260</span>
+    </div>
+  </div>
+</section>
+
+<!-- Book 9 -->
+<section id="book-9" class="book-detail">
+  <div class="book-header">
+    <img src="/pages/covers/brilliantfriend.jpg" alt="My Brilliant Friend" class="book-cover-large">
+    <div class="book-info">
+      <p class="genre">21st Century Literature</p>
+      <h2>My Brilliant Friend</h2>
+      <p class="author">by Elena Ferrante</p><br>
+      <p class="description">
+        A modern classic exploring friendship, identity, and the struggles of growing up in post-war Naples.
+      </p><br>
+      <div class="row">
+        <p><span class="label-gray">Pages</span><br><strong class="size">331</strong></p>
+        <p><span class="label-gray">Time</span><br><strong class="size">7 hours</strong></p>
+        <p><span class="label-gray">Rating</span><br><strong class="size">⭐4.3</strong></p>
+        <p><span class="label-gray">Level</span><br><strong class="size">Advanced</strong></p>
+      </div>
+      <div class="book-actions">
+        <a href="/pages/game.html?id=9" class="btn">Read Now</a>
+      </div>
+    </div>
+  </div>
+  <div class="progress">
+    <div class="progress-label"><span>Reading Progress</span><span style="color:#0d9488;">0% Complete</span></div>
+    <div class="progress-bar"><div class="progress-fill" style="width:0%;"></div></div>
+    <div class="progress-info"><span>Page 1 </span><span>of 331</span></div>
+  </div>
+</section>
+
+<!-- Book 10 -->
+<section id="book-10" class="book-detail">
+  <div class="book-header">
+    <img src="/pages/covers/sayyoullrememberme.jpg" alt="Say You'll Remember Me" class="book-cover-large">
+    <div class="book-info">
+      <p class="genre">Romance</p>
+      <h2>Say You'll Remember Me</h2>
+      <p class="author">by Katie McGarry</p><br>
+      <p class="description">
+        A heartfelt romance about love, second chances, and overcoming personal struggles.
+      </p><br>
+      <div class="row">
+        <p><span class="label-gray">Pages</span><br><strong class="size">400</strong></p>
+        <p><span class="label-gray">Time</span><br><strong class="size">8 hours</strong></p>
+        <p><span class="label-gray">Rating</span><br><strong class="size">⭐4.2</strong></p>
+        <p><span class="label-gray">Level</span><br><strong class="size">Intermediate</strong></p>
+      </div>
+      <div class="book-actions">
+        <a href="/pages/game.html?id=10" class="btn">Read Now</a>
+      </div>
+    </div>
+  </div>
+  <div class="progress">
+    <div class="progress-label"><span>Reading Progress</span><span style="color:#0d9488;">0% Complete</span></div>
+    <div class="progress-bar"><div class="progress-fill" style="width:0%;"></div></div>
+    <div class="progress-info"><span>Page 1 </span><span>of 400</span></div>
+  </div>
+</section>
+
+<!-- Book 11 -->
+<section id="book-11" class="book-detail">
+  <div class="book-header">
+    <img src="/pages/covers/floranteandlaura.jpg" alt="Florante at Laura" class="book-cover-large">
+    <div class="book-info">
+      <p class="genre">Filipiniana</p>
+      <h2>Florante at Laura</h2>
+      <p class="author">by Francisco Balagtas</p><br>
+      <p class="description">
+        Isang klasikong akda ng panitikang Pilipino na tumatalakay sa pag-ibig, katarungan, at pakikibaka laban sa pang-aapi.
+      </p><br>
+      <div class="row">
+        <p><span class="label-gray">Pages</span><br><strong class="size">180</strong></p>
+        <p><span class="label-gray">Time</span><br><strong class="size">3 hours</strong></p>
+        <p><span class="label-gray">Rating</span><br><strong class="size">⭐4.6</strong></p>
+        <p><span class="label-gray">Level</span><br><strong class="size">Intermediate</strong></p>
+      </div>
+      <div class="book-actions">
+        <a href="/pages/game.html?id=11" class="btn">Read Now</a>
+      </div>
+    </div>
+  </div>
+  <div class="progress">
+    <div class="progress-label"><span>Reading Progress</span><span style="color:#0d9488;">0% Complete</span></div>
+    <div class="progress-bar"><div class="progress-fill" style="width:0%;"></div></div>
+    <div class="progress-info"><span>Page 1 </span><span>of 180</span></div>
+  </div>
+</section>
+
+<!-- Book 12 -->
+<section id="book-12" class="book-detail">
+  <div class="book-header">
+    <img src="/pages/covers/mathematics.svg" alt="Algebra and Trigonometry" class="book-cover-large">
+    <div class="book-info">
+      <p class="genre">Mathematics</p>
+      <h2>Algebra and Trigonometry</h2>
+      <p class="author">by Jay Abramson</p><br>
+      <p class="description">
+        A comprehensive textbook covering fundamental concepts in algebra and trigonometry, designed for high school and early college students.
+      </p><br>
+      <div class="row">
+        <p><span class="label-gray">Pages</span><br><strong class="size">96</strong></p>
+        <p><span class="label-gray">Time</span><br><strong class="size">2 hours</strong></p>
+        <p><span class="label-gray">Rating</span><br><strong class="size">⭐4.1</strong></p>
+        <p><span class="label-gray">Level</span><br><strong class="size">Beginner</strong></p>
+      </div>
+      <div class="book-actions">
+        <a href="/pages/game.html?id=12" class="btn">Read Now</a>
+      </div>
+    </div>
+  </div>
+  <div class="progress">
+    <div class="progress-label"><span>Reading Progress</span><span style="color:#0d9488;">0% Complete</span></div>
+    <div class="progress-bar"><div class="progress-fill" style="width:0%;"></div></div>
+    <div class="progress-info"><span>Page 1 </span><span>of 96</span></div>
+  </div>
+</section>
+
+<!-- Book 13 -->
+<section id="book-13" class="book-detail">
+  <div class="book-header">
+    <img src="/pages/covers/epicpoetry.jpg" alt="Beowulf" class="book-cover-large">
+    <div class="book-info">
+      <p class="genre">Epic Poetry</p>
+      <h2>Beowulf</h2>
+      <p class="author">Anonymous</p><br>
+      <p class="description">
+        A cornerstone of English literature, recounting the heroic deeds of Beowulf against Grendel, Grendel’s mother, and a dragon.
+      </p><br>
+      <div class="row">
+        <p><span class="label-gray">Pages</span><br><strong class="size">200</strong></p>
+        <p><span class="label-gray">Time</span><br><strong class="size">4 hours</strong></p>
+        <p><span class="label-gray">Rating</span><br><strong class="size">⭐4.2</strong></p>
+        <p><span class="label-gray">Level</span><br><strong class="size">Intermediate</strong></p>
+      </div>
+      <div class="book-actions">
+        <a href="/pages/game.html?id=13" class="btn">Read Now</a>
+      </div>
+    </div>
+  </div>
+  <div class="progress">
+    <div class="progress-label"><span>Reading Progress</span><span style="color:#0d9488;">0% Complete</span></div>
+    <div class="progress-bar"><div class="progress-fill" style="width:0%;"></div></div>
+    <div class="progress-info"><span>Page 1 </span><span>of 200</span></div>
+  </div>
+</section>
+
+<!-- Book 14 -->
+<section id="book-14" class="book-detail">
+  <div class="book-header">
+    <img src="/pages/covers/manual.avif" alt="A practical guide for making post-mortem examinations" class="book-cover-large">
+    <div class="book-info">
+      <p class="genre">How-To / Guide</p>
+      <h2>A Practical Guide for Making Post-Mortem Examinations</h2>
+      <p class="author">by A.R Thomas</p><br>
+      <p class="description">
+        A comprehensive manual for medical professionals detailing the procedures and techniques for conducting post-mortem examinations.
+      </p><br>
+      <div class="row">
+        <p><span class="label-gray">Pages</span><br><strong class="size">600</strong></p>
+        <p><span class="label-gray">Time</span><br><strong class="size">12 hours</strong></p>
+        <p><span class="label-gray">Rating</span><br><strong class="size">⭐4.3</strong></p>
+        <p><span class="label-gray">Level</span><br><strong class="size">Advanced</strong></p>
+      </div>
+      <div class="book-actions">
+        <a href="/pages/game.html?id=14" class="btn">Read Now</a>
+      </div>
+    </div>
+  </div>
+  <div class="progress">
+    <div class="progress-label"><span>Reading Progress</span><span style="color:#0d9488;">0% Complete</span></div>
+    <div class="progress-bar"><div class="progress-fill" style="width:0%;"></div></div>
+    <div class="progress-info"><span>Page 1 </span><span>of 600</span></div>
+  </div>
+</section>
+
+<!-- Book 15 -->
+<section id="book-15" class="book-detail">
+  <div class="book-header">The Rings of Poseidon
+    <img src="/pages/covers/poseidon.jpg" alt="The Rings of Poseidon" class="book-cover-large">
+    <div class="book-info">
+      <p class="genre">Science Fiction</p>
+      <h2>The Rings of Poseidon</h2>
+      <p class="author">by Mike Crowson</p><br>
+      <p class="description">
+        A thrilling science fiction adventure that takes readers on a journey to the depths of the ocean, where they encounter mysterious creatures and uncover ancient secrets.
+      </p><br>
+      <div class="row">
+        <p><span class="label-gray">Pages</span><br><strong class="size">Varies</strong></p>
+        <p><span class="label-gray">Time</span><br><strong class="size">Varies</strong></p>
+        <p><span class="label-gray">Rating</span><br><strong class="size">⭐4.0</strong></p>
+        <p><span class="label-gray">Level</span><br><strong class="size">Intermediate</strong></p>
+      </div>
+      <div class="book-actions">
+        <a href="/pages/game.html?id=15" class="btn">Read Now</a>
+      </div>
+    </div>
+  </div>
+  <div class="progress">
+    <div class="progress-label"><span>Reading Progress</span><span style="color:#0d9488;">0% Complete</span></div>
+    <div class="progress-bar"><div class="progress-fill" style="width:0%;"></div></div>
+    <div class="progress-info"><span>Page 1 </span><span>of 100</span></div>
+  </div>
+</section>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <img src="https://public.readdy.ai/ai/img_res/a36c0863-385e-4f1d-89e6-2c3fcb419eb2.png" alt="ReadQuest Logo">
+        <h2>ReadQuest</h2>
+      </div>
+      <p class="mission-statement">
+        Empowering grade 11 students with an interactive reading experience. 
+        Discover classic literature, engage with interactive games, and enhance your learning journey.
+      </p>
+      <div class="social-links">
+        <a href="#"><img src="/pages/covers/facebook.png" alt="Facebook"></img></a>
+        <a href="#"><img src="/pages/covers/twitter.png" alt="Twitter"></img></a>
+        <a href="#"><img src="/pages/covers/instagram.png" alt="Instagram"></img></a>
+        <a href="#"><img src="/pages/covers/tiktok.png" alt="YouTube"></img></a>
+      </div>
+    </div>
+
+    <div class="footer-links">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="/pages/library.html">Browse Library</a></li> 
+        <li><a href="/pages/categories.html">Categories</a></li>   
+        <li><a href="/pages/about.html">About Us</a></li>  
+        <li><a href="/pages/faq.html">FAQ</a></li>  
+      </ul>
+    </div>
+
+    <div class="footer-links">
+      <h3>Support</h3>
+      <ul>
+        <li><a href="/pages/contact.html">Contact Us</a></li>
+        <li><a href="/pages/help.html">Help Center</a></li>
+        <li><a href="/pages/privacy-policy.html">Privacy Policy</a></li>
+        <li><a href="/pages/terms-of-service.html">Terms of Service</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 ReadQuest Library. All rights reserved.</p>
+    <div class="powered-by">Powered by: <span>ReadQuest Team</span></div>
+  </div>
+
+  <div class="chat-widget">
+    <button class="talk-btn">
+      <i class="icon">👨🏻‍💻</i>
+      Talk with Us
+    </button>
+  </div>
+</footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>

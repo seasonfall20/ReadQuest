@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReadQuest - Knowledge Check</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        :root {
+            --teal: #0d9488;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --bg-light: #f1f5f9;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .quiz-container {
+            background: var(--white);
+            width: 90%;
+            max-width: 600px;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--teal);
+            text-align: center;
+        }
+
+        .quiz-logo {
+            height: 60px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: var(--teal);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        #question-text {
+            font-size: 1.2rem;
+            color: #334155;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .option-btn {
+            background: var(--white);
+            color: var(--teal);
+            border: 2px solid var(--teal);
+            padding: 15px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            background: var(--teal);
+            color: var(--white);
+        }
+
+        .option-btn.correct {
+            background: #22c55e !important;
+            border-color: #22c55e !important;
+            color: white !important;
+        }
+
+        .option-btn.wrong {
+            background: #ef4444 !important;
+            border-color: #ef4444 !important;
+            color: white !important;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            font-weight: bold;
+            min-height: 24px;
+        }
+
+        .btn-large {
+            background: var(--teal);
+            color: var(--white);
+            border: none;
+            padding: 15px 40px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            display: none; /* Hidden until answer is chosen */
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <img src="https://public.readdy.ai/ai/img_res/a36c0863-385e-4f1d-89e6-2c3fcb419eb2.png" alt="Logo" class="quiz-logo">
+        <h1 id="quiz-title">Quest Checkpoint</h1>
+        <p id="question-text">Loading question...</p>
+
+        <div class="options-list" id="options-container">
+            </div>
+
+        <div class="feedback" id="feedback"></div>
+        <button id="return-btn" class="btn-large" onclick="returnToBook()">Return to Book</button>
+    </div>
+
+    <script src="../script.js"></script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const bID = params.get('id');
+
+        // This would ideally be in a separate questions.json, 
+        // but here is the logic structure:
+        const quizData = {
+            "1": {
+                question: "In 'To Kill a Mockingbird', who is the narrator of the story?",
+                options: ["Atticus Finch", "Scout Finch", "Jem Finch", "Boo Radley"],
+                correct: 1
+            },
+            "11": {
+                question: "Sino ang sumulat ng 'Florante at Laura'?",
+                options: ["Jose Rizal", "Apolinario Mabini", "Francisco Balagtas", "Emilio Jacinto"],
+                correct: 2
+            }
+            // Add keys 1-15 here
+        };
+
+        function loadQuestion() {
+            const data = quizData[bID];
+            if (!data) {
+                document.getElementById('question-text').innerText = "Checkpoint completed! You may proceed.";
+                document.getElementById('return-btn').style.display = "block";
+                return;
+            }
+
+            document.getElementById('question-text').innerText = data.question;
+            const container = document.getElementById('options-container');
+            
+            data.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(index, data.correct, btn);
+                container.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selected, correct, btn) {
+            const allBtns = document.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.disabled = true); // Prevent multiple clicks
+
+            if (selected === correct) {
+                btn.classList.add('correct');
+                document.getElementById('feedback').innerText = "Correct! Well done, Explorer.";
+                document.getElementById('feedback').style.color = "#22c55e";
+            } else {
+                btn.classList.add('wrong');
+                allBtns[correct].classList.add('correct');
+                document.getElementById('feedback').innerText = "Not quite. Review the last few pages!";
+                document.getElementById('feedback').style.color = "#ef4444";
+            }
+
+            document.getElementById('return-btn').style.display = "block";
+        }
+
+        function returnToBook() {
+            // Sends user back to the reader, which will load their saved page
+            window.location.href = `../game.html?id=${bID}`;
+        }
+
+        window.onload = loadQuestion;
+    </script>
+</body>
+</html>
