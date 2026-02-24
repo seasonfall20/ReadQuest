@@ -141,7 +141,12 @@
                 question: "Sino ang sumulat ng 'Florante at Laura'?",
                 options: ["Jose Rizal", "Apolinario Mabini", "Francisco Balagtas", "Emilio Jacinto"],
                 correct: 2
-            }
+            },
+            "3": {
+                question: "Want to Play a Bonus Game? Click the button below to test your knowledge of 'The Hobbit' and earn extra points!",
+                options: ["Play The Hobbit Quiz"],
+             correct: "/pages/games/hobbit-game/adventure.html" // The URL destination
+           }
             // Add keys 1-15 here
         };
 
@@ -165,24 +170,38 @@
             });
         }
 
-        function checkAnswer(selected, correct, btn) {
-            const allBtns = document.querySelectorAll('.option-btn');
-            allBtns.forEach(b => b.disabled = true); // Prevent multiple clicks
+// ... existing variables (params, bID, quizData) ...
 
-            if (selected === correct) {
-                btn.classList.add('correct');
-                document.getElementById('feedback').innerText = "Correct! Well done, Explorer.";
-                document.getElementById('feedback').style.color = "#22c55e";
-            } else {
-                btn.classList.add('wrong');
-                allBtns[correct].classList.add('correct');
-                document.getElementById('feedback').innerText = "Not quite. Review the last few pages!";
-                document.getElementById('feedback').style.color = "#ef4444";
-            }
+function checkAnswer(selected, correct, btn) {
+    // 1. Specific Redirect for Book 3
+    if (bID === "3") {
+        // Since correct: "/pages/games/hobbit-game/adventure.html" in your quizData
+        window.location.href = correct + `?id=${bID}`;
+        return; 
+    }
 
-            document.getElementById('return-btn').style.display = "block";
+    // 2. Normal Quiz logic for everything else
+    const allBtns = document.querySelectorAll('.option-btn');
+    allBtns.forEach(b => b.disabled = true);
+
+    if (selected === correct) {
+        btn.classList.add('correct');
+        document.getElementById('feedback').innerText = "Correct! Well done, Explorer.";
+        document.getElementById('feedback').style.color = "#22c55e";
+    } else {
+        btn.classList.add('wrong');
+        // Only try to highlight a button if 'correct' is a number index
+        if (typeof correct === 'number') {
+            allBtns[correct].classList.add('correct');
         }
+        document.getElementById('feedback').innerText = "Not quite. Review the last few pages!";
+        document.getElementById('feedback').style.color = "#ef4444";
+    }
 
+    document.getElementById('return-btn').style.display = "block";
+}
+
+// ... rest of the file (returnToBook, window.onload) ...
         function returnToBook() {
             // Sends user back to the reader, which will load their saved page
             window.location.href = `../game.html?id=${bID}`;

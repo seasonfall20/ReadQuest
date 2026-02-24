@@ -1,10 +1,192 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Us - ReadQuest</title>
+<html>
+  <head>
   <link rel="stylesheet" href="/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About ReadQuest</title>
+    <style>
+        :root {
+            --teal: #0d9488;
+            --white: #fff3f3;
+            --text-dark: #000000;
+            --text-light: #0000009d;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            background-color: #ffffff;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin-top: 40px;
+            padding: 80px 20px;
+            margin-left: 7rem;
+            height: 2000px;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .about-header h1 {
+            font-size: 4rem;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .about-header p {
+            color: var(--text-light);
+            font-size: 2rem;
+        }
+
+        .mission-section {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        .mission-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .mission-content h2 {
+            font-size: 3rem;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .mission-content p {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .mission-image {
+            flex: 1;
+            min-width: 300px;
+            margin-left: 40px;
+        }
+
+        .mission-image img {
+            width: 770px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-height: 500px;
+        }
+
+        @media (max-width: 768px) {
+            .mission-section {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* Typography and General Layout */
+        .section-title {
+            text-align: center;
+            margin: 80px 0 40px;
+        }
+        .section-title h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        /* Grid Layouts */
+        .grid-three {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .grid-two {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: 100%;
+            max-height: 200px;
+            gap: 70px;
+        }
+
+        /* Cards */
+        .info-card.center {
+            text-align: center;
+            padding: 20px;
+        }
+        .info-card h3 {
+            margin: 15px 0 10px;
+            font-size: 1.25rem;
+            color: #000000;
+        }
+        .info-card p {
+            color: #0000009d;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+.value-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 25px;
+    background: #fff;
+    border: 0.001px solid #a1a1a15b !important;
+    box-shadow: 5px rgba(0,0,0,1);
+    border-radius: 12px;
+    height: 100%; /* Makes all cards in a row the same height */
+}
+        .value-text h3 {
+            margin: 0 0 8px;
+            font-size: 1.1rem;
+            color: #000000;
+        }
+        .value-text p {
+            color: #0000009d;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Icons Styles */
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+        .icon-circle {
+            width: 45px;
+            height: 45px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+        .icon-box img,
+        .icon-circle img {
+            width: 40px;
+            height: 40px;
+        }
+
+        /* Mobile Adjustments */
+@media (max-width: 992px) {
+    .grid-two {
+        grid-template-columns: 1fr; /* Stacks to 1 column for readability */
+    }
+    .container {
+        margin-left: 20px; /* Removes the large left margin on smaller screens */
+    }
+}
+      </style>
 </head>
 <body>
   <!-- Navbar -->
@@ -22,63 +204,106 @@
       <a href="/pages/contact.html">Contact</a>
       <a href="/pages/library.html" class="navbarb">Start Reading</a>
   </div>
-</nav>
+  </nav>
 
   <!-- About Section -->
-  <section class="about-section">
-    <div class="about-container">
-      <h1>About ReadQuest</h1>
-      <p class="intro-text">Transforming education through interactive reading experiences</p>
-      
-      <div class="about-content">
-        <div class="about-text">
-          <h2>Our Mission</h2>
-          <p>ReadQuest is dedicated to making classic literature engaging and accessible for grade 11 students. We combine the richness of timeless books with interactive games and modern learning techniques to create an immersive reading experience.</p>
-          
-          <h2>What We Offer</h2>
-          <ul>
-            <li><strong>Curated Library:</strong> A carefully selected collection of classic and contemporary literature</li>
-            <li><strong>Interactive Games:</strong> Educational games tied to book content for deeper engagement</li>
-            <li><strong>Reading Progress Tracking:</strong> Track your reading journey and achievements</li>
-            <li><strong>Study Resources:</strong> Guides, summaries, and discussion prompts for each book</li>
-          </ul>
-          
-          <h2>Why ReadQuest?</h2>
-          <p>Traditional reading can feel intimidating, especially for complex classics. ReadQuest breaks down barriers by making literature entertaining while maintaining academic rigor. Our interactive approach helps students:</p>
-          <ul>
-            <li>Develop critical reading skills</li>
-            <li>Understand complex themes and characters</li>
-            <li>Engage with literature in a fun, gamified environment</li>
-            <li>Build confidence in their literary analysis abilities</li>
-          </ul>
-        </div>
-        
-        <div class="about-stats">
-          <div class="stat-box">
-            <h3>500+</h3>
-            <p>Books Available</p>
-          </div>
-          <div class="stat-box">
-            <h3>50K+</h3>
-            <p>Active Readers</p>
-          </div>
-          <div class="stat-box">
-            <h3>100+</h3>
-            <p>Interactive Games</p>
-          </div>
-          <div class="stat-box">
-            <h3>98%</h3>
-            <p>Student Satisfaction</p>
-          </div>
-        </div>
-      </div>
-      
-      <div class="team-section">
-        <h2>Meet Our Team</h2>
-        <p>ReadQuest is built by educators, developers, and designers passionate about transforming how students engage with literature.</p>
-      </div>
+<div class="container">
+        <header class="about-header">
+            <h1>About ReadQuest</h1>
+            <p>Revolutionizing reading for grade 11 students through interactive learning</p>
+        </header>
+
+        <section class="mission-section">
+            <div class="mission-content">
+                <h2>Our Mission</h2>
+                <p>
+                    Ginawa ang ReadQuest para matulungan ang mga mag-aaral sa Baitang 11 na mas maunawaan at mas magustuhan ang pagbabasa.
+                </p>
+                <p>
+                    Nais naming magbigay ng mga babasahin na malinaw, makabuluhan, at may kaugnayan sa tunay na buhay. Sa pamamagitan ng pagsasama ng teknolohiya at literatura, ginagawa nating isang kapana-panabik na "quest" ang bawat pahina. Sa pamamagitan ng mga interactive games na nakatuon sa mga akdang pampanitikan, layunin naming gawing mas masaya at mas madaling maunawaan ang pagbabasa para sa mga mag-aaral.
+                </p>
+                <p>
+                    Naniniwala kami na ang literatura ay hindi lamang mga salita sa papel—ito ay isang karanasan na nagpapalalim ng ating pag-unawa sa mundo at sa ating sarili.
+                </p>
+            </div>
+
+            <div class="mission-image">
+                <img src="covers/about-image.jpeg" alt="ReadQuest Mission View">
+            </div>
+        </section>   
+<section class="different-section">
+    <div class="section-title">
+        <h2>What Makes Us Different</h2>
     </div>
-  </section>
+    <div class="grid-three">
+        <div class="info-card center">
+            <div class="icon-box icon-teal">
+                <img src="/icons/game.png" alt="Game Icon">
+            </div>
+            <h3>Book-Specific Games</h3>
+            <p>Bawat aklat ay may kasamang mga disenyong interaktibong laro na sumusubok sa pag-unawa, bokabularyo, at kritikal na pagsusuri ng partikular na kuwentong iyon.</p>
+        </div>
+        <div class="info-card center">
+            <div class="icon-box icon-red">
+                <img src="/icons/arrow.png" alt="Curriculum Icon">
+            </div>
+            <h3>Curriculum-Aligned</h3>
+            <p>Lahat ng nilalaman ay maingat na pinili upang tumugma sa mga pamantayan ng literatura sa Baitang 11, tinitiyak ang kaugnayan nito sa pag-aaral.</p>
+        </div>
+        <div class="info-card center">
+            <div class="icon-box icon-yellow">
+                <img src="/icons/chart-simple-horizontal.png" alt="Progress Icon">
+            </div>
+            <h3>Progress Tracking</h3>
+            <p>Subaybayan ang iyong pag-unlad sa pagbabasa, mga score sa laro, at mga nakamit na achievement upang manatiling motivated sa iyong paglalakbay sa pagbabasa.</p>
+        </div>
+    </div>
+</section>
+
+<section class="values-section">
+    <div class="section-title">
+        <h2>Our Values</h2>
+    </div>
+    <div class="grid-two">
+        <div class="value-card">
+            <div class="icon-circle icon-teal-light">
+                <img src="/icons/bulb.png" alt="Innovation">
+            </div>
+            <div class="value-text">
+                <h3>Innovation in Education</h3>
+                <p>Patuloy kaming naghahanap ng mga bagong paraan upang gawing mas kapana-panabik at epektibo ang pag-aaral sa pamamagitan ng teknolohiya at malikhaing disenyo.</p>
+            </div>
+        </div>
+        <div class="value-card">
+            <div class="icon-circle icon-red-light">
+                <img src="/icons/following.png" alt="Student Design">
+            </div>
+            <div class="value-text">
+                <h3>Student-Centered Design</h3>
+                <p>Ang bawat feature ay ginawa na isinasaalang-alang ang mga mag-aaral, tinitiyak ang accessibility, pakikilahok, at tunay na halagang pang-edukasyon.</p>
+            </div>
+        </div>
+        <div class="value-card">
+            <div class="icon-circle icon-yellow-light">
+                <img src="/icons/book-alt.png" alt="Literature">
+            </div>
+            <div class="value-text">
+                <h3>Love of Literature</h3>
+                <p>Kami ay masigasig sa pagpapaunlad ng tunay na pagpapahalaga sa mahusay na literatura at pagtulong sa mga mag-aaral na matuklasan ang saya ng pagbabasa.</p>
+            </div>
+        </div>
+        <div class="value-card">
+            <div class="icon-circle icon-teal-light">
+                <img src="/icons/shield-check.png" alt="Excellence">
+            </div>
+            <div class="value-text">
+                <h3>Quality & Excellence</h3>
+                <p>Pinapanatili namin ang mataas na pamantayan sa pagpili ng nilalaman, disenyo ng laro, at karanasan ng user upang maibigay ang pinakamahusay na plataporma.</p>
+            </div>
+        </div>
+    </div>
+</section>
+    </div>
 
   <!-- Footer -->
   <footer class="main-footer">
@@ -128,12 +353,10 @@
 
   <div class="chat-widget">
     <button class="talk-btn">
-      <i class="icon">👨🏻‍💻</i>
+      <div class="icon">👨🏻‍💻</div>
       Talk with Us
     </button>
   </div>
 </footer>
-  <script src="../script.js"></script>
-
 </body>
 </html>

@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .replace('science and technology', 'science-tech')
                 .replace('how-to/guides', 'how-to')
                 .replace('epic poetry', 'epic-poetry')
+                .replace('classic literature', 'classic-literature')
                 .replace(/\s+/g, '-')
                 .toLowerCase();
             
@@ -223,6 +224,8 @@ if (searchInput) {
                 categorySlug = 'sci-fi';
             } else if (buttonText.includes('mathematics')) {
                 categorySlug = 'mathematics';
+            } else if (buttonText.includes('classic literature')) {
+                categorySlug = 'classic-literature';
             }
             
             // Remove active class from all buttons
@@ -343,3 +346,11 @@ function resetBookProgress(id) {
         window.location.reload();
     }
 }
+
+// --- 12. BOOK PROGRESS RESET FUNCTION ---
+const scrollContainer = document.querySelector('.categories-filter');
+
+scrollContainer.addEventListener('wheel', (evt) => {
+    evt.preventDefault();
+    scrollContainer.scrollLeft += evt.deltaY;
+});
