@@ -13,9 +13,14 @@
             --bg-light: #f1f5f9;
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             background-color: var(--bg-light);
             margin: 0;
+            padding: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -25,9 +30,9 @@
 
         .quiz-container {
             background: var(--white);
-            width: 90%;
+            width: 100%;
             max-width: 600px;
-            padding: 40px;
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             border-top: 5px solid var(--teal);
@@ -35,41 +40,51 @@
         }
 
         .quiz-logo {
-            height: 60px;
-            margin-bottom: 20px;
+            height: 50px;
+            margin-bottom: 15px;
         }
 
         h1 {
             color: var(--teal);
-            font-size: 1.5rem;
-            margin-bottom: 10px;
+            font-size: 1.3rem;
+            margin-bottom: 8px;
             text-transform: uppercase;
         }
 
+        .page-indicator {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+
         #question-text {
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: #334155;
-            margin-bottom: 30px;
-            line-height: 1.4;
+            margin-bottom: 20px;
+            line-height: 1.5;
         }
 
         .options-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-bottom: 30px;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
         .option-btn {
             background: var(--white);
             color: var(--teal);
             border: 2px solid var(--teal);
-            padding: 15px;
+            padding: 12px;
             border-radius: 6px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
             text-align: left;
+            font-size: 0.9rem;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
         }
 
         .option-btn:hover {
@@ -90,23 +105,116 @@
         }
 
         .feedback {
-            margin-top: 20px;
+            margin-top: 15px;
             font-weight: bold;
             min-height: 24px;
+            font-size: 0.95rem;
         }
 
         .btn-large {
             background: var(--teal);
             color: var(--white);
             border: none;
-            padding: 15px 40px;
+            padding: 12px 30px;
             border-radius: 4px;
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 0.9rem;
             cursor: pointer;
             text-transform: uppercase;
-            display: none; /* Hidden until answer is chosen */
+            display: none;
             margin: 0 auto;
+            min-height: 44px;
+        }
+
+        .btn-large:active {
+            opacity: 0.8;
+        }
+
+        /* Tablet (768px and up) */
+        @media (min-width: 768px) {
+            .quiz-container {
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            #question-text {
+                font-size: 1.1rem;
+            }
+
+            .option-btn {
+                padding: 15px;
+                font-size: 0.95rem;
+            }
+
+            .btn-large {
+                padding: 15px 40px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Desktop (1024px and up) */
+        @media (min-width: 1024px) {
+            .quiz-container {
+                padding: 40px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            #question-text {
+                font-size: 1.15rem;
+            }
+
+            .option-btn {
+                padding: 15px;
+                font-size: 1rem;
+            }
+
+            .btn-large {
+                padding: 15px 40px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Landscape orientation optimization */
+        @media (max-height: 600px) {
+            body {
+                padding: 5px;
+            }
+
+            .quiz-container {
+                padding: 15px;
+            }
+
+            .quiz-logo {
+                height: 40px;
+                margin-bottom: 10px;
+            }
+
+            h1 {
+                font-size: 1.1rem;
+                margin-bottom: 5px;
+            }
+
+            #question-text {
+                font-size: 0.9rem;
+                margin-bottom: 10px;
+            }
+
+            .options-list {
+                gap: 8px;
+                margin-bottom: 10px;
+            }
+
+            .option-btn {
+                padding: 8px;
+                font-size: 0.85rem;
+                min-height: 40px;
+            }
         }
     </style>
 </head>
@@ -115,6 +223,7 @@
     <div class="quiz-container">
         <img src="https://public.readdy.ai/ai/img_res/a36c0863-385e-4f1d-89e6-2c3fcb419eb2.png" alt="Logo" class="quiz-logo">
         <h1 id="quiz-title">Quest Checkpoint</h1>
+        <p class="page-indicator" id="page-indicator"></p>
         <p id="question-text">Loading question...</p>
 
         <div class="options-list" id="options-container">
@@ -128,82 +237,242 @@
     <script>
         const params = new URLSearchParams(window.location.search);
         const bID = params.get('id');
+        // If the user is opening The Hobbit quiz, redirect immediately to the adventure game
+        if (bID === '3') {
+            window.location.href = '/pages/games/hobbit-game/adventure.html';
+        }
+        const triggerPage = parseInt(params.get('page')) || 20; // Default to page 20 if not specified
+        const currentPage = parseInt(localStorage.getItem(`book_${bID}_page`)) || 1;
 
-        // This would ideally be in a separate questions.json, 
-        // but here is the logic structure:
+        // 110 Questions: 5 per book across different pages
         const quizData = {
-            "1": {
-                question: "In 'To Kill a Mockingbird', who is the narrator of the story?",
-                options: ["Atticus Finch", "Scout Finch", "Jem Finch", "Boo Radley"],
-                correct: 1
-            },
-            "11": {
-                question: "Sino ang sumulat ng 'Florante at Laura'?",
-                options: ["Jose Rizal", "Apolinario Mabini", "Francisco Balagtas", "Emilio Jacinto"],
-                correct: 2
-            },
-            "3": {
-                question: "Want to Play a Bonus Game? Click the button below to test your knowledge of 'The Hobbit' and earn extra points!",
-                options: ["Play The Hobbit Quiz"],
-             correct: "/pages/games/hobbit-game/adventure.html" // The URL destination
-           }
-            // Add keys 1-15 here
+            "1": [
+                { page: 20, question: "Who is the narrator of 'To Kill a Mockingbird'?", options: ["Atticus Finch", "Scout Finch", "Jem Finch", "Boo Radley"], correct: 1, type: "comprehension" },
+                { page: 50, question: "What is Tom Robinson's profession?", options: ["Farmer", "Carpenter", "Preacher", "Teacher"], correct: 1, type: "comprehension" },
+                { page: 150, question: "What do you think will happen to Tom Robinson at trial?", options: ["He'll be found innocent", "He'll be found guilty due to racial prejudice", "He'll escape", "He'll accept a plea deal"], correct: 1, type: "prediction" },
+                { page: 200, question: "What does the mockingbird symbolize in this novel?", options: ["Danger", "Innocence and vulnerability", "Wealth", "Evil"], correct: 1, type: "interpretation" },
+                { page: 280, question: "How can Scout's understanding of others help in real-world conflicts?", options: ["By ignoring differences", "By practicing empathy and seeing others' perspectives", "By being aggressive", "By avoiding difficult conversations"], correct: 1, type: "application" }
+            ],
+            "2": [
+                { page: 15, question: "According to the book, what is 'co-intelligence'?", options: ["AI working alone", "Humans and AI working together", "Replacing humans with AI", "AI learning from mistakes"], correct: 1, type: "comprehension" },
+                { page: 40, question: "What example does Mollick give about AI assisting knowledge workers?", options: ["Manufacturing", "Building better prompts and workflows", "Sports", "Entertainment"], correct: 1, type: "comprehension" },
+                { page: 100, question: "How might co-intelligence change your future career?", options: ["You won't need skills", "You'll use AI as a tool to enhance your capabilities", "Jobs will disappear", "Everything will be automated"], correct: 1, type: "prediction" },
+                { page: 180, question: "What does Mollick mean when he says AI is 'alien'?", options: ["It comes from space", "Its thinking patterns are fundamentally different from human cognition", "It's incompatible", "It's friendly but distant"], correct: 1, type: "interpretation" },
+                { page: 230, question: "How can you apply co-intelligence principles in your studies?", options: ["Rely only on AI", "Use AI to brainstorm, draft, and refine your ideas", "Avoid using technology", "Copy AI answers"], correct: 1, type: "application" }
+            ],
+            "3": [
+                { page: 30, question: "Why does Bilbo leave the Shire?", options: ["He was forced", "Gandalf encourages him to join a quest for adventure", "He wanted treasure", "He was escaping danger"], correct: 1, type: "comprehension" },
+                { page: 80, question: "What is the significance of the Ring Bilbo finds?", options: ["It's just a regular ring", "It grants invisibility and extends life", "It has healing powers", "It opens doors"], correct: 1, type: "comprehension" },
+                { page: 150, question: "What challenges do you think Bilbo will face next in his journey?", options: ["Easy battles", "More dramatic encounters with powerful creatures and darker themes", "A quick return home", "Finding treasure easily"], correct: 1, type: "prediction" },
+                { page: 200, question: "What does Bilbo's transformation represent?", options: ["Just becoming stronger", "Personal growth from an ordinary person to a courageous adventurer", "Gaining wealth", "Learning magic"], correct: 1, type: "interpretation" },
+                { page: 280, question: "How can Bilbo's courage inspire you to face your own challenges?", options: ["By ignoring fear", "By recognizing that even ordinary people can accomplish extraordinary things when they persevere", "By avoiding risks", "By seeking help constantly"], correct: 1, type: "application" }
+            ],
+            "4": [
+                { page: 25, question: "Sino ang bida ng 'ABNKKBSNPLAko?!'?", options: ["Isang babae sa mall", "Isang lalaki na naghahanap ng pera", "Isang estudyante na may problema", "Isang sikat na personalidad"], correct: 0, type: "comprehension" },
+                { page: 60, question: "Ano ang kahulugan ng kakaibang title?", options: ["Random letters", "Combination ng mga Filipino phrases na sumasalamin sa kuwento", "English words", "Secret code"], correct: 1, type: "comprehension" },
+                { page: 120, question: "Ano ang susunod na mangyari sa buhay ng karakter?", options: ["Magiging masaya agad", "Haharapin ang mas maraming hamon at karanasan", "Iiwan ang pamilya", "Makakahanap ng instant solution"], correct: 1, type: "prediction" },
+                { page: 180, question: "Ano ang simbolo ng kuwentong ito sa modernong lipunan?", options: ["Walang kahulugan", "Ang paglalakbay tungo sa pagkakaintindi ng sarili", "Pera lang ang mahalaga", "Saya lang ang buhay"], correct: 1, type: "interpretation" },
+                { page: 240, question: "Paano mo maiapply ang mensahe nito sa iyong buhay?", options: ["Magkamali lang at magpatuloy", "Matuto mula sa mga hamon at maghanap ng sarili", "Langkasan ang pamilya", "Magpayaman lang"], correct: 1, type: "application" }
+            ],
+            "5": [
+                { page: 20, question: "Kailan nagsimula ang 'Dekada '70' sa kuwento?", options: ["1960", "1970", "1980", "1990"], correct: 1, type: "comprehension" },
+                { page: 55, question: "Sino ang mga pangunahing karakter sa panahon ng dictatorship?", options: ["Political leaders only", "Mga ordinaryong tao na nakakaranas ng martial law", "Military officers only", "Walang karakter na importante"], correct: 1, type: "comprehension" },
+                { page: 130, question: "Ano ang mangyayari sa susunod na dekada ayon sa kuwento?", options: ["Mas maraming restriction", "Pagbabago at pag-asa para sa pagbabago", "Mas mulat ang dictatorship", "Walang pagbabago"], correct: 1, type: "prediction" },
+                { page: 200, question: "Ano ang kahulugan ng martial law sa buhay ng ordinaryong tao?", options: ["Positibo lang", "Nakaapekto sa kalayaan at karanasan ng bawat tao", "Walang epekto", "Maganda ang buhay"], correct: 1, type: "interpretation" },
+                { page: 270, question: "Paano mo maiuugnay ang kasaysayan na ito sa kasalukuyan?", options: ["Walang ugnayan", "Mahalaga ang pag-intindi ng kasaysayan para sa kinabukasan", "Kalimutan lang", "Hindi mahalaga"], correct: 1, type: "application" }
+            ],
+            "6": [
+                { page: 30, question: "Sino ang may-akda ng 'Mga Ibong Mandaragit'?", options: ["Edgardo M. Reyes", "Amado V. Hernandez", "Bob Ong", "Francisco Balagtas"], correct: 0, type: "comprehension" },
+                { page: 70, question: "Ano ang tema ng kuwentong ito?", options: ["Pag-ibig lang", "Oppression at pag-asa ng mga mahihirap", "Kasiyahan", "Walang tema"], correct: 1, type: "comprehension" },
+                { page: 140, question: "Paano magwawakas ang kuwento?", options: ["Masaya", "Sa pag-asa at determinasyon sa gitna ng pagkilala", "Sa kalungkutan", "Eksakto hindi alam"], correct: 1, type: "prediction" },
+                { page: 200, question: "Ano ang simbolo ng mga ibong mandaragit?", options: ["Pagkain", "Mga malakas na ang mandadala ng pagbabago", "Kalangitan", "Liyab"], correct: 1, type: "interpretation" },
+                { page: 260, question: "Paano mo maiapply ang mensahe sa social justice?", options: ["Hindi importante", "Kilalanin ang oppression at samahan ang fight para sa rights", "Mag-ignore", "Makibahagi sa kasamaan"], correct: 1, type: "application" }
+            ],
+            "7": [
+                { page: 25, question: "Ano ang settingan ng 'Sa Mga Kuko ng Liwanag'?", options: ["Probinsya", "Urban Manila - lungsod na puno ng contradiksiyon", "Iloilo", "Cebu"], correct: 1, type: "comprehension" },
+                { page: 60, question: "Sino ang pangunahing karakter at ano ang kanyang kalagayan?", options: ["Mayaman", "Mahirap na kababaihan na naglalaban para sa buhay", "Propesyonal", "Walang kalagayan"], correct: 1, type: "comprehension" },
+                { page: 130, question: "Ano ang mangyayari sa kanyang pamilya?", options: ["Maayos", "Haharapin ang paghihirap at social inequality", "Magiging mayaman", "Lilipat abroad"], correct: 1, type: "prediction" },
+                { page: 190, question: "Ano ang ibig sabihin ng 'kuko ng liwanag'?", options: ["Masaya", "Ang ganda at tila-espesyal ng lungsod na nagkukubli ng kalungkutan", "Mahabang ibon", "Mahabang kuko"], correct: 1, type: "interpretation" },
+                { page: 280, question: "Paano mo makikita ang similaridad na ito sa iyong komunidad?", options: ["Walang similaridad", "Makilala ang contradiction ng urban life at inequality", "Lahat ay masaya", "Wala nang problema"], correct: 1, type: "application" }
+            ],
+            "8": [
+                { page: 28, question: "Saan nakatuon ang aksyon ng 'Gapô'?", options: ["Manila", "Olongapo - lungsod na puno ng American military presence", "Davao", "Cebu"], correct: 1, type: "comprehension" },
+                { page: 75, question: "Ano ang pangunahing isyu sa kuwentong ito?", options: ["Pag-ibig", "Ang epekto ng colonization at nationalism sa buhay ng mga tao", "Sports", "Negosyo"], correct: 1, type: "comprehension" },
+                { page: 140, question: "Paano makakaapekto ang kuwento sa hinaharap ng mga karakter?", options: ["Magiging masaya", "Magkakaroon ng mas malalim na kamalayan sa identidad at sarili", "Lilipat abroad", "Walang epekto"], correct: 1, type: "prediction" },
+                { page: 205, question: "Ano ang simbol ng 'gapô' sa kultura?", options: ["Puso", "Ang inner conflict ng pagiging Pilipino sa modernong mundo", "Walang kahulugan", "Kakaibang diwang"], correct: 1, type: "interpretation" },
+                { page: 280, question: "Paano mo maiintindihan ang kahalagahan ng kultura sa identidad?", options: ["Walang importante", "Kailangang pangalagaan at ipagmalaki ang sariling kultura habang umuunlad", "Kalimutan lang sariling kultura", "Lahat ng kultura ay pareho"], correct: 1, type: "application" }
+            ],
+            "9": [
+                { page: 35, question: "Sa anong bansa naganap ang 'My Brilliant Friend'?", options: ["Roma, Italy", "Naples, Italy", "Milan, Italy", "Venice, Italy"], correct: 1, type: "comprehension" },
+                { page: 85, question: "Sino ang mga pangunahing karakter?", options: ["Mga lalaki", "Dalawang magkakaibang babae na may malalim na relasyon", "Pamilya", "Mga guro"], correct: 1, type: "comprehension" },
+                { page: 155, question: "Paano ang kanilang amistad ay magbabago?", options: ["Manatiling pareho", "Haharapin ang kompetisyon at magkakaiba ng direksyon sa buhay", "Magiging magkapatid", "Magkakaaway lang"], correct: 1, type: "prediction" },
+                { page: 230, question: "Ano ang kahulugan ng 'brilliant friend'?", options: ["Maganda lang", "Ang intellectual companion na nagbibigay ng inspirasyon at personal growth", "Mayamang kaibigan", "Matagal na kaibigan"], correct: 1, type: "interpretation" },
+                { page: 310, question: "Paano ang kwento ng kanilang amistad ay tumutugon sa iyong karanasan?", options: ["Hindi applicable", "Nauunawaan mo ang paano ang amistad ay tumuturing pangmatagalan at naimpluwensiyang sa ating buhay", "Lahat ay superficial", "Walang kahulugan"], correct: 1, type: "application" }
+            ],
+            "10": [
+                { page: 28, question: "Ano ang pangunahing tema ng 'Say You'll Remember Me'?", options: ["Adventure at discovery", "Pag-ibig, second chances, at personal growth", "Mystery at crime", "Political intrigue"], correct: 1, type: "comprehension" },
+                { page: 68, question: "Sino ang mga pangunahing karakter?", options: ["Matatanda", "Mga kabataan na nagsisisilbihan ng detention at nagtutulungan", "Mga guro", "Mga bata"], correct: 1, type: "comprehension" },
+                { page: 145, question: "Paano magbabago ang kanilang buhay dahil sa karanasan?", options: ["Walang magbabago", "Makakahanap ng inner strength at bagong pag-asa", "Mas magiging masama", "Lilipat abroad"], correct: 1, type: "prediction" },
+                { page: 210, question: "Ano ang kahulugan ng second chances sa kuwentong ito?", options: ["Pagkakataon sa business", "Ang oportunidad na mag-transform at magsimula ng bago kahit sa pinakamahirap na sitwasyon", "Pera", "Trabaho"], correct: 1, type: "interpretation" },
+                { page: 290, question: "Paano mo maiapply ang kahulugan ng redemption pa sa iyong buhay?", options: ["Hindi applicable", "Magtiwala sa proseso ng pagbabago at mag-alok ng second chances sa iba tulad ng iyong binibigyan", "Mag-judge lang", "Walang pagbabago"], correct: 1, type: "application" }
+            ],
+            "11": [
+                { page: 32, question: "Sino ang sumulat ng 'Florante at Laura'?", options: ["Jose Rizal", "Apolinario Mabini", "Francisco Balagtas", "Emilio Jacinto"], correct: 2, type: "comprehension" },
+                { page: 80, question: "Ano ang kuwento ng mga pangunahing karakter?", options: ["Business adventure", "Pag-ibig at determinasyon sa gitna ng gera at kaguluhan", "Sports", "Pang-araw-araw na buhay"], correct: 1, type: "comprehension" },
+                { page: 155, question: "Paano magwawakas ang kanilang kuwento?", options: ["Magkakaaway", "Magsasama at magkakaroon ng bagong simula sa kapayapaan", "Magkakaaway ng matagal", "Iiwan ng isa"], correct: 1, type: "prediction" },
+                { page: 220, question: "Ano ang simbolo ng pag-ibig sa isang pareho?", options: ["Pera", "Ang pinakamatibay na lakas para lumampas sa kahirapan at politikang balakubak", "Kaibigan lang", "Kapwa tagumpay"], correct: 1, type: "interpretation" },
+                { page: 290, question: "Paano ang kuwentong ito ay nakipag-ugnay sa pamilya at commitment?", options: ["Hindi importante", "Ipinahihita kung paano ang pag-ibig at layunin ay hindi mapapantayan kahit sa pinakamahirap na oras", "Walang relasyon", "Lahat ay pareho"], correct: 1, type: "application" }
+            ],
+            "12": [
+                { page: 20, question: "Ano ang pangunahing saklaw ng 'Algebra at Trigonometry'?", options: ["History ng mathematics", "Fundamental concepts sa algebra at trigonometry", "Advanced calculus", "Geometry lang"], correct: 1, type: "comprehension" },
+                { page: 50, question: "Ano ang mga pangunahing formula na dapat matandaan?", options: ["Walang importante", "Pythagorean theorem, sine, cosine, tangent identities", "Lahat ng formula", "Simpleng arithmetic"], correct: 1, type: "comprehension" },
+                { page: 100, question: "Paano ang kaalaman ng trigonometry ay magagamit sa real-world?", options: ["Hindi applicable", "Possible applications sa engineering, physics, surveying, architecture", "Walang halaga", "Puro teorya lang"], correct: 1, type: "prediction" },
+                { page: 160, question: "Ano ang kahulugan ng sine, cosine, tangent sa triangle?", options: ["Basta numero", "Mga ratios na kumakatawan sa relasyon ng mga sides ng triangle", "Irrelevant", "Pagkain"], correct: 1, type: "interpretation" },
+                { page: 220, question: "Paano mo maiapply ang algebra sa construction o surveying?", options: ["Hindi importante", "Gamitin ang equations para sukatin, maglayout, at masiguro ang geometric accuracy", "Walang aplikasyon", "Basta estimate lang"], correct: 1, type: "application" }
+            ],
+            "13": [
+                { page: 30, question: "Sa 'Beowulf', sino ang unang halimaw na binangis ng hari?", options: ["Grendel's mother", "Grendel", "Isang dragon", "Isang sea monster"], correct: 1, type: "comprehension" },
+                { page: 75, question: "Ano ang sandata ng Beowulf laban sa Grendel?", options: ["Espada", "Walang sandata - puro kalidad at lakas", "Pangilang", "Baril"], correct: 1, type: "comprehension" },
+                { page: 145, question: "Paano ang Beowulf ay magbabago sa kanyang edad at kapangyarihan?", options: ["Manatiling pareho", "Magiging mas malakas ngunit mas vulnerable sa huli ng buhay", "Magiging mahina", "Walang pagbabago"], correct: 1, type: "prediction" },
+                { page: 210, question: "Ano ang simbolo ng Grendel sa medieval times?", options: ["Kakaibang halimaw", "Ang evil, chaos, at destructive force na hindi malalampasan ng civilization", "Walang kahulugan", "Mahabang diwang"], correct: 1, type: "interpretation" },
+                { page: 280, question: "Paano ang legacy ng Beowulf ay nakaapekto sa litterature at kultura?", options: ["Hindi importante", "Naging modelo ng hero's journey at moral code sa western literature", "Wala pang aplikasyon", "Kalimutan lang"], correct: 1, type: "application" }
+            ],
+            "14": [
+                { page: 18, question: "Para sa sino itinalang ang 'A Practical Guide for Making Post-Mortem Examinations'?", options: ["Mga estudyante", "Medical professionals", "Mga journalist", "Mga pulis"], correct: 1, type: "comprehension" },
+                { page: 45, question: "Ano ang pangunahing layunin ng post-mortem examination?", options: ["Pang-entertainment", "Matukoy ang cause ng kamatayan at magbigay ng legal documentation", "Walang layunin", "Tapos lang"], correct: 1, type: "comprehension" },
+                { page: 85, question: "Paano magiging mahalagang ito sa criminal justice?", options: ["Hindi importante", "Tumutulong sa paglutas ng mga mistery crimes at magbigay ng benepisyo sa pamilya", "Walang papel", "Optional lang"], correct: 1, type: "prediction" },
+                { page: 130, question: "Ano ang kahalagahan ng detalyadong dokumentasyon?", options: ["Walang kahulugan", "Mahalaga para sa legal proceedings at medikal na record", "Optional lang", "Basta dokumentado"], correct: 1, type: "interpretation" },
+                { page: 180, question: "Paano mo maiapply ang kaalaman na ito sa forensic science o medical field?", options: ["Hindi importante", "Maunawaan ang significance ng ethical protocol at scientific accuracy sa medikal records", "Walang aplikasyon", "Puro teorya"], correct: 1, type: "application" }
+            ],
+            "15": [
+                { page: 28, question: "Saan nagsimula ang adventure sa 'The Rings of Poseidon'?", options: ["Sa langit", "Sa kalaliman ng karagatan", "Sa bundok", "Sa ilalim ng lupa"], correct: 1, type: "comprehension" },
+                { page: 70, question: "Sino ang mga pangunahing karakter sa kwentong ito?", options: ["Mga astronout", "Mga explorer o adventurers sa underwater realm", "Mga tao sa lupa", "Mga ibon"], correct: 1, type: "comprehension" },
+                { page: 140, question: "Paano ang underwater world ay magse-transform ng aming pag-unawa sa mundo?", options: ["Walang pagbabago", "Magbubukas ng bagong perspektibo sa explore ng hindi namin alam", "Walang halaga", "Puro fantasy"], correct: 1, type: "prediction" },
+                { page: 200, question: "Ano ang simbolo ng Poseidon's rings?", options: ["Alahas lang", "Ang power, mystery, at ancient knowledge na naghihintay sa tuklasin", "Walang kahulugan", "Simpleng alahas"], correct: 1, type: "interpretation" },
+                { page: 270, question: "Paano ang spirit ng adventure ay dapat makinabang sa iyong inspirasyon?", options: ["Walang aplikasyon", "Matuto ng curiosity at determinasyon sa pag-explore ng unknown", "Basta manood lang", "Hindi importante"], correct: 1, type: "application" }
+            ],
+            "16": [
+                { page: 30, question: "Sa 'The Hunger Games', ano ang layunin ng competition?", options: ["Sports event", "Deadly televised competition bilang punishment at control", "Food festival", "Educational program"], correct: 1, type: "comprehension" },
+                { page: 75, question: "Sino ang kasama ni Katniss sa arena?", options: ["Sarili niya lang", "Ang ibang tribute mula sa iba't ibang district", "Mga game maker", "Mga guard"], correct: 1, type: "comprehension" },
+                { page: 150, question: "Paano ang Katniss ay magbabago bilang tao sa karanasan na ito?", options: ["Manatiling pareho", "Magiging mas malakas at mas conscious sa politics ng oppression", "Magiging masaya", "Hindi magbabago"], correct: 1, type: "prediction" },
+                { page: 220, question: "Ano ang simbolo ng Hunger Games sa lipunan?", options: ["Puro entertainment", "Ang power dynamics, inequality, at method ng control ng government", "Walang kahulugan", "Puro laro"], correct: 1, type: "interpretation" },
+                { page: 310, question: "Paano ang resistance sa injustice ay dapat ipakita tulad ni Katniss?", options: ["Walang dapat gawin", "Magtiwala sa conneccion sa iba at gamitin ang individual power para sa collective change", "Mag-resign lang", "Sumunod sa authority"], correct: 1, type: "application" }
+            ],
+            "17": [
+                { page: 32, question: "Ano ang setting ng 'The Kite Runner'?", options: ["Pakistan", "Afghanistan", "India", "Iran"], correct: 1, type: "comprehension" },
+                { page: 75, question: "Sino ang mga pangunahing karakter?", options: ["Mga magkakaibang tao", "Amir at Hassan - dalawang bata mula sa ibang class", "Mga guro", "Mga magulang"], correct: 1, type: "comprehension" },
+                { page: 155, question: "Paano ang traumatic event ay makakaapekto sa kanilang lifetime relationship?", options: ["Walang epekto", "Magdudulot ng long-term guilt, estrangement, at redemption arc", "Magiging mas malapit", "Magiging magkapatid"], correct: 1, type: "prediction" },
+                { page: 220, question: "Ano ang kahulugan ng 'kite running' sa kultura?", options: ["Sports lang", "Ang cultural tradition na kumakatawan sa competition, friendship, at competitive spirit", "Walang halaga", "Puro laruan"], correct: 1, type: "interpretation" },
+                { page: 300, question: "Paano ang kahulugan ng redemption ay umabot sa personal forgiveness at social responsibility?", options: ["Hindi importante", "Nauunawaan na ang pagbabago ay kailangan ng effort at willingness na harapin ang nakaraan", "Walang pagbabago", "Walang solusyon"], correct: 1, type: "application" }
+            ],
+            "18": [
+                { page: 2, question: "Ano ang pangunahing tema ng 'The Impact of Digital Technology on Reading'?", options: ["Digital technology ay masama", "Paano nagbabago ang digital tools ang paraan ng pagbabasa", "E-readers ang future", "Printing ay obsolete"], correct: 1, type: "comprehension" },
+                { page: 3, question: "Ano ang mga positibong epekto ng digital reading?", options: ["Walang positive", "Accessibility, interactive features, personalized learning", "Lahat negative", "Hindi mahalaga"], correct: 1, type: "comprehension" },
+                { page: 4, question: "Paano ang multimedia integration ay magbabago ng comprehension?", options: ["Walang epekto", "Magpapahusay ng understanding through visual at audio support", "Magiging mas confusing", "Walang pagbabago"], correct: 1, type: "prediction" },
+                { page: 6, question: "Ano ang kahulugan ng 'digital literacy' sa modernong mundo?", options: ["Basta computer skills", "Ang kakayahang mag-navigate, evaluate, at gumamit ng digital information responsibly", "Puro technical skills", "Walang halaga"], correct: 1, type: "interpretation" },
+                { page: 7, question: "Paano mo maiapply ang digital tools na ito sa iyong pag-aaral?", options: ["Hindi importante", "Gumamit ng digital resources critically pero hindi kalimutan ang deep reading", "Basta digital apps", "Lahat ay automatic"], correct: 1, type: "application" }
+            ],
+            "19": [
+                { page: 2, question: "Ano ang focus ng research sa 'A Study on Literacy Enhancement'?", options: ["Pang-marketing", "Strategies para mapabuti ang reading skills", "Teacher training lang", "Computer access"], correct: 1, type: "comprehension" },
+                { page: 5, question: "Aling estratehiya ang proven na effective sa literacy programs?", options: ["Walang effective", "Phonics, comprehension strategies, regular practice", "Puro memorization", "Basta repetition"], correct: 1, type: "comprehension" },
+                { page: 6, question: "Paano ang early intervention ay makakatulong sa struggling readers?", options: ["Walang tulong", "Mag-prevent ng long-term reading difficulties at boost confidence", "Magiging mas frustrated", "Mali lang ang approach"], correct: 1, type: "prediction" },
+                { page: 4, question: "Ano ang kahalagahan ng engaging materials sa literacy?", options: ["Walang importante", "Nakakatulong sa motivation at critical thinking through relevant content", "Basta basahin lang", "Generic lang"], correct: 1, type: "interpretation" },
+                { page: 9, question: "Paano mo maiapply ang insights na ito kung magiging teacher ka?", options: ["Hindi importante", "Gamitin ang evidence-based strategies at engaging materials para sa inclusive literacy instruction", "Tradisyonal lang", "Walang innovation"], correct: 1, type: "application" }
+            ],
+            "20": [
+                { page: 28, question: "Sa 'Aladdin and the Magic Lamp', ano ang magical object na nagbago ng buhay?", options: ["Espada", "Ang magic lamp", "Isang singsing", "Isang libro"], correct: 1, type: "comprehension" },
+                { page: 70, question: "Sino ang tatlong wishes ni Aladdin?", options: ["Walang wishes", "Wealth, palace, at winning princess's heart", "Walang desires", "Simpleng gift"], correct: 1, type: "comprehension" },
+                { page: 140, question: "Paano ang consequences ng wishes ay makakaapekto sa kwento?", options: ["Walang masama", "Magiging source ng conflict at life lessons about desires", "Perfect wishes lang", "Saya lang"], correct: 1, type: "prediction" },
+                { page: 200, question: "Ano ang simbolo ng magic lamp sa folktale?", options: ["Puro walang halaga", "Ang temptation, power, at ultimate test ng moral character", "Simpleng alahas", "Wala nang kahulugan"], correct: 1, type: "interpretation" },
+                { page: 280, question: "Paano ang theme ng 'be careful what you wish for' ay applicable sa iyo?", options: ["Basta mag-wish", "Maging conscious na ang consequences ng desires at mag-think wisely about goals", "Walang pinagg-isipan", "Basta maniwala lang"], correct: 1, type: "application" }
+            ],
+            "21": [
+                { page: 35, question: "Saan nagsisimula ang serye sa 'Harry Potter and the Sorcerer's Stone'?", options: ["Hogwarts lang", "Muggle world at pagdating sa Hogwarts", "Ministry of Magic", "Flying car"], correct: 1, type: "comprehension" },
+                { page: 80, question: "Sino ang mga close friends ni Harry sa Hogwarts?", options: ["Sarili niya lang", "Ron Weasley at Hermione Granger", "Mga guro", "Mga bata lang"], correct: 1, type: "comprehension" },
+                { page: 155, question: "Paano ang discovery ng Sorcerer's Stone ay magbabago ng ending?", options: ["Walang epekto", "Magiging central sa climax at revealing ng Quirrell's true allegiance", "Magiging boring", "Walang adventure"], correct: 1, type: "prediction" },
+                { page: 220, question: "Ano ang kahulugan ng 'courage' na ipinakita ng mga karakter?", options: ["Walang takot", "Ang willingness na harapin ang danger para sa greater good", "Basta brave lang", "Walang alinlangan"], correct: 1, type: "interpretation" },
+                { page: 310, question: "Paano ang friendship at loyalty ay magiging foundation ng future adventures?", options: ["Hindi importante", "Nauunawaan na ang genuine connections ay critical sa overcoming evil", "Basta kaibigan lang", "Walang halaga"], correct: 1, type: "application" }
+            ],
+            "22": [
+                { page: 22, question: "Sino ang main character sa 'Little Red Riding Hood'?", options: ["Ang mga woodcutter", "Parents lang", "Isang batang babae na may pulang damit", "Isang hunter"], correct: 2, type: "comprehension" },
+                { page: 50, question: "Saan napunta si Red Riding Hood at ano ang dala niya?", options: ["Walang lugar", "Sa lola, dala na basket ng pagkain", "Sa market", "Sa kolehiyo"], correct: 1, type: "comprehension" },
+                { page: 90, question: "Paano ang encounter sa wolf ay magiging turning point sa kuwento?", options: ["Walang encounter", "Magiging test ng innocence at critical moment ng awareness", "Walang meeting", "Puro saya"], correct: 1, type: "prediction" },
+                { page: 130, question: "Ano ang simbolo ng wolf sa folktale?", options: ["Kahit sino lang", "Danger, deception, at predatory threats sa innocence", "Kaibigan lang", "Walang kahulugan"], correct: 1, type: "interpretation" },
+                { page: 170, question: "Paano ang morality ng kuwentong ito ay mag-guide sa iyo sa mga personal safety at discernment?", options: ["Walang aplikasyon", "Matutunan maging aware sa suspicious behavior at importance ng stranger danger awareness", "Basta obey lang", "Walang lesson"], correct: 1, type: "application" }
+            ],
+            "23": [
+                { page: 10, question: "Who is the heroine of 'Snow White and the Seven Dwarfs'?", options: ["Snow White", "The Queen", "The Prince", "A Dwarf"], correct: 0, type: "comprehension" },
+                { page: 30, question: "Why does Snow White flee to the forest?", options: ["For adventure", "To escape the Queen's jealousy", "To find the dwarfs", "To go to school"], correct: 1, type: "comprehension" },
+                { page: 50, question: "What does the poisoned apple symbolize?", options: ["Danger", "Deception and envy", "Health", "Friendship"], correct: 1, type: "interpretation" },
+                { page: 70, question: "How can the dwarfs' kindness inspire you?", options: ["Always be nice", "Help those in need even if you're small", "Ignore strangers", "Be suspicious"], correct: 1, type: "application" },
+                { page: 90, question: "What lesson does the story teach about vanity?", options: ["It's good", "It can lead to harm", "It's irrelevant", "It's fashionable"], correct: 1, type: "interpretation" }
+            ],
+            "24": [
+                { page: 12, question: "Who falls asleep in 'Sleeping Beauty'?", options: ["The King", "The Princess", "The Fairy", "The Prince"], correct: 1, type: "comprehension" },
+                { page: 40, question: "What causes the long sleep?", options: ["A spell from a fairy", "A curse by a witch", "A sickness", "A dream"], correct: 1, type: "comprehension" },
+                { page: 80, question: "What does the thorns around the castle represent?", options: ["Protection", "Isolation and waiting", "Beauty", "Danger"], correct: 1, type: "interpretation" },
+                { page: 120, question: "How does the prince’s perseverance inspire you?", options: ["Gives up easily", "Keep going despite obstacles", "Avoid challenges", "Blame others"], correct: 1, type: "application" },
+                { page: 150, question: "What moral does the tale give about patience?", options: ["It’s pointless", "Good things come to those who wait", "It wastes time", "It’s overrated"], correct: 1, type: "interpretation" }
+            ],
+            "25": [
+                { page: 15, question: "What is the central theme of 'Beauty and the Beast'?", options: ["Looks matter", "Beauty is on the inside", "Magic is real", "Monsters are bad"], correct: 1, type: "comprehension" },
+                { page: 45, question: "Why does Belle stay at the Beast's castle?", options: ["For adventure", "To save her father", "She is lost", "For treasure"], correct: 1, type: "comprehension" },
+                { page: 90, question: "What transformation in the story symbolizes love?", options: ["Beast to prince", "Castle to palace", "Beast to wolf", "Belle to queen"], correct: 0, type: "interpretation" },
+                { page: 120, question: "How can you apply the story's message about acceptance?", options: ["Judge others quickly", "Look beyond surface appearances", "Only trust friends", "Avoid new people"], correct: 1, type: "application" },
+                { page: 150, question: "What does the rose represent?", options: ["Time and love", "Anger", "Fear", "Power"], correct: 0, type: "interpretation" }
+            ]
         };
 
         function loadQuestion() {
-            const data = quizData[bID];
-            if (!data) {
-                document.getElementById('question-text').innerText = "Checkpoint completed! You may proceed.";
+            const bookQuestions = quizData[bID];
+            if (!bookQuestions || bookQuestions.length === 0) {
+                // Clarify that this book simply has no quiz entries defined yet
+                document.getElementById('question-text').innerText = "No questions are available for this book at the moment.";
+                document.getElementById('feedback').innerText = "You can continue reading or return to the library.";
+                document.getElementById('feedback').style.color = "#64748b";
                 document.getElementById('return-btn').style.display = "block";
+                console.warn(`Quiz data missing for book ID ${bID}`);
                 return;
             }
 
-            document.getElementById('question-text').innerText = data.question;
-            const container = document.getElementById('options-container');
+            // Find matching question by trigger page (page that triggered the checkpoint)
+            const matchingQuestion = bookQuestions.find(q => q.page === triggerPage);
+            const questionData = matchingQuestion || bookQuestions[0];
+
+            document.getElementById('question-text').innerText = questionData.question;
+            document.getElementById('page-indicator').innerText = `Page ${questionData.page} • ${questionData.type}`;
             
-            data.options.forEach((opt, index) => {
+            const container = document.getElementById('options-container');
+            questionData.options.forEach((opt, index) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
                 btn.innerText = opt;
-                btn.onclick = () => checkAnswer(index, data.correct, btn);
+                btn.onclick = () => checkAnswer(index, questionData.correct, btn);
                 container.appendChild(btn);
             });
         }
 
-// ... existing variables (params, bID, quizData) ...
+        function checkAnswer(selected, correct, btn) {
+            const allBtns = document.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.disabled = true);
 
-function checkAnswer(selected, correct, btn) {
-    // 1. Specific Redirect for Book 3
-    if (bID === "3") {
-        // Since correct: "/pages/games/hobbit-game/adventure.html" in your quizData
-        window.location.href = correct + `?id=${bID}`;
-        return; 
-    }
+            if (selected === correct) {
+                btn.classList.add('correct');
+                document.getElementById('feedback').innerText = "Correct! Well done, Explorer.";
+                document.getElementById('feedback').style.color = "#22c55e";
+            } else {
+                btn.classList.add('wrong');
+                if (typeof correct === 'number') {
+                    allBtns[correct].classList.add('correct');
+                }
+                document.getElementById('feedback').innerText = "Not quite. Review the last few pages!";
+                document.getElementById('feedback').style.color = "#ef4444";
+            }
 
-    // 2. Normal Quiz logic for everything else
-    const allBtns = document.querySelectorAll('.option-btn');
-    allBtns.forEach(b => b.disabled = true);
-
-    if (selected === correct) {
-        btn.classList.add('correct');
-        document.getElementById('feedback').innerText = "Correct! Well done, Explorer.";
-        document.getElementById('feedback').style.color = "#22c55e";
-    } else {
-        btn.classList.add('wrong');
-        // Only try to highlight a button if 'correct' is a number index
-        if (typeof correct === 'number') {
-            allBtns[correct].classList.add('correct');
+            document.getElementById('return-btn').style.display = "block";
         }
-        document.getElementById('feedback').innerText = "Not quite. Review the last few pages!";
-        document.getElementById('feedback').style.color = "#ef4444";
-    }
 
-    document.getElementById('return-btn').style.display = "block";
-}
-
-// ... rest of the file (returnToBook, window.onload) ...
         function returnToBook() {
-            // Sends user back to the reader, which will load their saved page
             window.location.href = `../game.html?id=${bID}`;
         }
 

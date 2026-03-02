@@ -52,7 +52,7 @@
             <div class="page-display"><span id="pg-top">1</span></div>
             <button class="btn-nav" id="next-top">NEXT</button>
         </div>
-        <div class="exit-container"><a href="book.html" class="exit-link">EXIT</a></div>
+        <div class="exit-container"><a href="book.html" id="exit-link" class="exit-link">EXIT</a></div>
     </header>
 
     <div id="main-viewport">
@@ -73,10 +73,19 @@ const pdfjsLib = window['pdfjs-dist/build/pdf'];
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
 
 const bID = new URLSearchParams(window.location.search).get('id');
+
+// Special case: if the Hobbit is opened, send the user directly to the adventure game
+if (bID === '3') {
+    window.location.href = '/pages/games/hobbit-game/adventure.html';
+}
+
 let pdfDoc = null, 
     pageNum = parseInt(localStorage.getItem(`book_${bID}_page`)) || 1, 
     checkpointPage = null,
     isRendering = false; // Prevents "button mashing" bugs
+
+// Set exit link to go to the correct book detail page
+document.getElementById('exit-link').href = `book.html?id=${bID}`;
 
 // 1. Fetch Book Data
 fetch('../books.json')
@@ -112,8 +121,18 @@ function renderPage(num) {
         page.render(renderContext).promise.then(() => {
             isRendering = false;
             
-            // Check for checkpoint
-            // We check a 'passed' flag so they don't get stuck if they return to this page
+            // Check if this page has a question checkpoint (pages 20, 50, 150, 200, 280)
+            const questionPages = [20, 50, 150, 200, 280];
+            const hasQuestionOnThisPage = questionPages.includes(num);
+            
+            if (hasQuestionOnThisPage) {
+                const hasPassed = localStorage.getItem(`book_${bID}_question_${num}`) === 'true';
+                if (!hasPassed) {
+                    triggerQuestion(num);
+                }
+            }
+            
+            // Also check the old checkpoint logic for backward compatibility
             const hasPassed = localStorage.getItem(`book_${bID}_checkpoint_passed`) === 'true';
             if (num === checkpointPage && !hasPassed) {
                 triggerCheckpoint();
@@ -141,6 +160,11 @@ function onPrevPage() {
     if (pageNum === checkpointPage) {
         localStorage.removeItem(`book_${bID}_checkpoint_passed`);
     }
+    // Also allow questions to re-trigger if going back
+    const questionPages = [20, 50, 150, 200, 280];
+    if (questionPages.includes(pageNum)) {
+        localStorage.removeItem(`book_${bID}_question_${pageNum}`);
+    }
     pageNum--;
     renderPage(pageNum);
 }
@@ -149,6 +173,15 @@ function updateStorage(num) {
     const pct = Math.round((num / pdfDoc.numPages) * 100);
     localStorage.setItem(`book_${bID}_progress`, JSON.stringify({ lastPage: num, percent: pct }));
     localStorage.setItem(`book_${bID}_page`, num);
+}
+
+function triggerQuestion(pageNum) {
+    setTimeout(() => {
+        // Mark this page's question as completed
+        localStorage.setItem(`book_${bID}_question_${pageNum}`, 'true');
+        alert("📚 Quest Checkpoint Reached! Answer the question to continue.");
+        window.location.href = `/pages/games/questions.html?id=${bID}&page=${pageNum}`;
+    }, 500);
 }
 
 function triggerCheckpoint() {

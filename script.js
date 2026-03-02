@@ -342,6 +342,13 @@ function resetBookProgress(id) {
         localStorage.removeItem(`book_${id}_progress`);
         localStorage.removeItem(`book_${id}_page`);
         
+        // Also remove any question/checkpoint flags so the quizzes will trigger again
+        Object.keys(localStorage).forEach(key => {
+            if (key.startsWith(`book_${id}_question_`) || key === `book_${id}_checkpoint_passed`) {
+                localStorage.removeItem(key);
+            }
+        });
+
         // Refresh the page to update the UI bars to 0%
         window.location.reload();
     }
@@ -350,8 +357,285 @@ function resetBookProgress(id) {
 // --- 13. BOOK CATEGORIES SCROLLING ---
 const scrollContainer = document.querySelector('.categories-filter');
 
-scrollContainer.addEventListener('wheel', (evt) => {
-    evt.preventDefault();
-    scrollContainer.scrollLeft += evt.deltaY;
+if (scrollContainer) {
+    scrollContainer.addEventListener('wheel', (evt) => {
+        evt.preventDefault();
+        scrollContainer.scrollLeft += evt.deltaY;
+    });
+}
+
+// --- 13.5 UPDATE PROGRESS BARS FROM LOCALSTORAGE ---
+function updateAllProgressBars() {
+    // Loop through all 22 books
+    for (let bookId = 1; bookId <= 22; bookId++) {
+        const progressData = localStorage.getItem(`book_${bookId}_progress`);
+        const progressSection = document.querySelector(`#book-${bookId} .progress`);
+        
+        if (progressSection) {
+            if (progressData) {
+                try {
+                    const { lastPage, percent } = JSON.parse(progressData);
+                    
+                    // Update progress bar fill width
+                    const progressFill = progressSection.querySelector('.progress-fill');
+                    if (progressFill) {
+                        progressFill.style.width = percent + '%';
+                    }
+                    
+                    // Update percentage text
+                    const progressLabel = progressSection.querySelector('.progress-label span:last-child');
+                    if (progressLabel) {
+                        progressLabel.textContent = Math.round(percent) + '% Complete';
+                    }
+                    
+                    // Update page info - need to get total pages from HTML
+                    const progressInfo = progressSection.querySelector('.progress-info');
+                    if (progressInfo) {
+                        const totalPagesText = progressInfo.querySelector('span:last-child').textContent;
+                        const totalPages = parseInt(totalPagesText.split(' ')[1]);
+                        
+                        const pageSpan = progressInfo.querySelector('span:first-child');
+                        if (pageSpan) {
+                            pageSpan.textContent = `Page ${lastPage} `;
+                        }
+                    }
+                } catch (e) {
+                    console.error(`Error parsing progress for book ${bookId}:`, e);
+                }
+            }
+        }
+    }
+}
+
+// Call on page load
+document.addEventListener('DOMContentLoaded', updateAllProgressBars);
+
+// Also call when page becomes visible (tab switch)
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+        updateAllProgressBars();
+    }
 });
 
+// --- 14. CHAT WIDGET - TALK WITH US ---
+document.addEventListener('DOMContentLoaded', () => {
+    const talkBtn = document.querySelector('.talk-btn');
+    
+    if (talkBtn) {
+        talkBtn.addEventListener('click', initializeChatWidget);
+    }
+
+    function initializeChatWidget() {
+        // Remove existing chat if any
+        const existingChat = document.getElementById('chat-widget-popup');
+        if (existingChat) {
+            existingChat.remove();
+            return;
+        }
+
+        // Create chat widget HTML
+        const chatHTML = `
+            <div id="chat-widget-popup" style="
+                position: fixed;
+                bottom: 80px;
+                right: 20px;
+                width: 350px;
+                height: 500px;
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 5px 40px rgba(0,0,0,0.16);
+                border: 1px solid #e2e8f0;
+                display: flex;
+                flex-direction: column;
+                z-index: 10000;
+                font-family: 'Inter', sans-serif;
+            ">
+                <div style="
+                    background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+                    color: white;
+                    padding: 15px;
+                    border-radius: 8px 8px 0 0;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                ">
+                    <h3 style="margin: 0; font-size: 1rem;">ReadQuest Support</h3>
+                    <button onclick="document.getElementById('chat-widget-popup').remove()" style="
+                        background: none;
+                        border: none;
+                        color: white;
+                        font-size: 1.2rem;
+                        cursor: pointer;
+                        padding: 0;
+                    ">&times;</button>
+                </div>
+                
+                <div id="chat-messages" style="
+                    flex: 1;
+                    overflow-y: auto;
+                    padding: 15px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                ">
+                </div>
+                
+                <div style="
+                    padding: 10px;
+                    border-top: 1px solid #e2e8f0;
+                    display: flex;
+                    gap: 8px;
+                ">
+                    <input 
+                        type="text" 
+                        id="chat-input" 
+                        placeholder="Type your message..." 
+                        style="
+                            flex: 1;
+                            padding: 10px;
+                            border: 1px solid #e2e8f0;
+                            border-radius: 4px;
+                            font-family: inherit;
+                            font-size: 0.9rem;
+                        "
+                    />
+                    <button onclick="sendChatMessage()" style="
+                        background: #0d9488;
+                        color: white;
+                        border: none;
+                        padding: 10px 20px;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-weight: bold;
+                        transition: background 0.2s;
+                    " onmouseover="this.style.background='#0f766e'" onmouseout="this.style.background='#0d9488'">
+                        Send
+                    </button>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', chatHTML);
+
+        // Welcome message
+        setTimeout(() => {
+            displayChatMessage('support', 'Hello! 👋 Welcome to ReadQuest Support. How can I help you today?');
+        }, 300);
+
+        // Add enter key functionality
+        document.getElementById('chat-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendChatMessage();
+            }
+        });
+
+        document.getElementById('chat-input').focus();
+    }
+
+    window.sendChatMessage = function() {
+        const input = document.getElementById('chat-input');
+        const message = input.value.trim();
+
+        if (!message) return;
+
+        // Display user message
+        displayChatMessage('user', message);
+        input.value = '';
+
+        // Generate response
+        setTimeout(() => {
+            const response = generateChatResponse(message);
+            displayChatMessage('support', response);
+        }, 500);
+    };
+
+    function displayChatMessage(sender, message) {
+        const messagesDiv = document.getElementById('chat-messages');
+        const messageElement = document.createElement('div');
+        
+        if (sender === 'user') {
+            messageElement.style.cssText = `
+                background: #0d9488;
+                color: white;
+                padding: 10px 12px;
+                border-radius: 8px;
+                align-self: flex-end;
+                max-width: 80%;
+                word-wrap: break-word;
+                font-size: 0.9rem;
+            `;
+        } else {
+            messageElement.style.cssText = `
+                background: #f1f5f9;
+                color: #334155;
+                padding: 10px 12px;
+                border-radius: 8px;
+                align-self: flex-start;
+                max-width: 80%;
+                word-wrap: break-word;
+                font-size: 0.9rem;
+            `;
+        }
+
+        messageElement.textContent = message;
+        messagesDiv.appendChild(messageElement);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    function generateChatResponse(userMessage) {
+        const msg = userMessage.toLowerCase();
+
+        // Greetings
+        if (msg.match(/\b(hi|hello|hey|greetings|good morning|good afternoon|good evening)\b/)) {
+            return '👋 Hello! Welcome to ReadQuest. How can I assist you with your reading journey?';
+        }
+
+        // Finding books
+        if (msg.match(/\b(can't find|cannot find|where is|how do i find|looking for)\b/)) {
+            return '📚 No problem! You can browse all available books in our Library. Click on "Library" in the navigation menu, or use the search bar to find the book you\'re looking for. You can also filter by category!';
+        }
+
+        // Understanding books
+        if (msg.match(/\b(can't understand|cannot understand|don't understand|confused|hard to understand|difficult)\b/)) {
+            return '🤔 I understand! Our books have different difficulty levels. Try starting with books marked "Beginner" or "Intermediate". You can also check out the FAQ section for tips on improving your reading skills. Would you like me to recommend an easier book?';
+        }
+
+        // Connection issues
+        if (msg.match(/\b(connection|error|broken|not working|problem|bug)\b/)) {
+            return '⚠️ Sorry to hear you\'re experiencing issues! Please try refreshing the page or clearing your browser cache. If the problem persists, please contact us through the "Contact" page with details about the issue.';
+        }
+
+        // Progress/reading help
+        if (msg.match(/\b(progress|stuck|skip|help understanding|explain)\b/)) {
+            return '📖 You can track your reading progress with our progress bars. If you\'re stuck on a particular section, take the checkpoint quiz - it helps reinforce key concepts! For detailed help, visit our Help Center or FAQ.';
+        }
+
+        // Game/quiz help
+        if (msg.match(/\b(quiz|game|bonus|checkpoint|questions)\b/)) {
+            return '🎮 Our quizzes help you test your knowledge of each book! After reading a section, you\'ll encounter a checkpoint quiz. Correct answers help you progress. For bonus games, look for special challenges in select books like "The Hobbit"!';
+        }
+
+        // Account/profile
+        if (msg.match(/\b(account|profile|login|sign up|password|reset)\b/)) {
+            return '👤 Currently, ReadQuest uses browser storage to track your progress. Your reading history and progress are saved locally on your device. No account creation needed!';
+        }
+
+        // Recommendations
+        if (msg.match(/\b(recommend|suggestion|what should|what book)\b/)) {
+            return '⭐ Great question! Try browsing our Library by category. We have classic literature, Filipino literature, science fiction, romance, and more. What genre interests you most?';
+        }
+
+        // Help/support general
+        if (msg.match(/\b(help|support|can you help|need assistance|assistance)\b/)) {
+            return '✋ Of course! I\'m here to help. I can assist with:\n• Finding books\n• Understanding content\n• Quiz/game guidance\n• Technical issues\n\nWhat do you need help with?';
+        }
+
+        // Thank you
+        if (msg.match(/\b(thank|thanks|appreciate|thx)\b/)) {
+            return '😊 You\'re welcome! Happy reading! If you need anything else, feel free to ask.';
+        }
+
+        // Default response
+        return 'Thanks for your message! 📝 I can help with:\n• Finding & recommending books\n• Understanding content\n• Quiz & game guidance\n• Account & progress questions\n\nWhat can I help you with?';
+    }
+});
