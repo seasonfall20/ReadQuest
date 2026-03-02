@@ -36,7 +36,7 @@
             height: auto !important; 
         }
 
-        .reader-footer { width: 100%; background: var(--white); padding: 40px 0; text-align: center; border-top: 1px solid var(--border); }
+        .reader-footer { width: 100%; background: var(--white); padding: 40px 0; text-align: center; border-top: 1px solid var(--border); margin-bottom: 20px; }
         .btn-large { background: var(--teal); color: var(--white); border: none; padding: 15px 40px; border-radius: 4px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
@@ -104,7 +104,7 @@ function renderPage(num) {
     pdfDoc.getPage(num).then((page) => {
         const canvas = document.getElementById('pdf-canvas');
         const ctx = canvas.getContext('2d');
-        const viewport = page.getViewport({scale: 1.5});
+        const viewport = page.getViewport({scale: 1});
         canvas.height = viewport.height;
         canvas.width = viewport.width;
 

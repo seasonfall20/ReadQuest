@@ -347,10 +347,11 @@ function resetBookProgress(id) {
     }
 }
 
-// --- 12. BOOK PROGRESS RESET FUNCTION ---
+// --- 13. BOOK CATEGORIES SCROLLING ---
 const scrollContainer = document.querySelector('.categories-filter');
 
 scrollContainer.addEventListener('wheel', (evt) => {
     evt.preventDefault();
     scrollContainer.scrollLeft += evt.deltaY;
 });
+
